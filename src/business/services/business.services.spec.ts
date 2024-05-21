@@ -3,7 +3,7 @@ import { businessService } from './business.service';
 import { getModelToken } from '@nestjs/mongoose';
 import { Organization } from '../schema/organization.entity';
 import { Model } from 'mongoose';
-describe('TasksService', () => {
+describe('BusinessService', () => {
   let service: businessService;
   let model;
   beforeEach(async () => {

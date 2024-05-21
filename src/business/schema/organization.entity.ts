@@ -3,14 +3,18 @@ import { Document, Types } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class Organization extends Document {
+
+  @Prop()
+  id: string;
+
   @Prop()
   description: string;
 
   @Prop()
   name: string;
 
-  // @Prop()
-  // email: string;
+  @Prop()
+  email: string;
 
   @Prop()
   logo: string;
@@ -18,12 +22,13 @@ export class Organization extends Document {
   @Prop()
   phone: string;
 
-  // @Prop({ type: Object })
-  // address: {
-  //   city: string;
-  //   street: string;
-  //   num: number;
-  // };
+  @Prop({ type: Object })
+  address: {
+    city: string;
+    street: string;
+    num: number;
+  };
+
   @Prop({ type: Types.ObjectId, ref: 'employee' })
   owner: Types.ObjectId;
 
