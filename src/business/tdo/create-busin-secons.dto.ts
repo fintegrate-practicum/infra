@@ -1,7 +1,6 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from "class-validator";
 
 export class CreateBusinessDtoLevel2 {
-
   @IsString()
   description: string;
 
@@ -14,5 +13,4 @@ export class CreateBusinessDtoLevel2 {
 
   @IsString()
   establishmentDate: string;
-
 }
