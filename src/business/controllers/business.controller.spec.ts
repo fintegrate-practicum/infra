@@ -1,8 +1,8 @@
-import { Test, TestingModule } from "@nestjs/testing";
-import { businessController } from "../controllers/business.controller";
-import { businessService } from "../services/business.service";
-import { CreateBusinessDto } from "../tdo/create-busin-first.dto";
-import { CreateBusinessDtoLevel2 } from "../tdo/create-busin-secons.dto";
+import { Test, TestingModule } from '@nestjs/testing';
+import { businessController } from '../controllers/business.controller';
+import { businessService } from '../services/business.service';
+import { CreateBusinessDto } from '../tdo/create-busin-first.dto';
+import { CreateBusinessDtoLevel2 } from '../tdo/create-busin-secons.dto';
 
 describe("BusinessController", () => {
   let controller: businessController;
