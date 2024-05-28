@@ -1,14 +1,17 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import {  IsString } from "class-validator";
 export class CreateBusinessDto {
   @IsString()
   id: string;
 
-  @IsNotEmpty()
   @IsString()
   name: string;
 
-  @IsNotEmpty()
-  owner: number;
   @IsString()
   email: string;
+
+  constructor(id: string, name: string, email: string) {
+    this.id = id;
+    this.name = name;
+    this.email = email;
+  }
 }
