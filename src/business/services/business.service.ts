@@ -19,11 +19,9 @@ export class businessService {
     const newBusiness = new this.businessModel(Organization);
     if (newBusiness) {
       return await newBusiness.save();
-    } else return null;
-  }
-
-  async findAll(): Promise<Organization[]> {
-    return this.businessModel.find().exec();
+    } else {
+      return null;
+    }
   }
 
   async getBusinessById(id: string): Promise<CreateBusinessDto> {

@@ -2,7 +2,6 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { businessController } from "../controllers/business.controller";
 import { businessService } from "../services/business.service";
 import { CreateBusinessDto } from "../tdo/create-busin-first.dto";
-
 describe("BusinessController", () => {
   let controller: businessController;
   let service: businessService;
@@ -26,33 +25,38 @@ describe("BusinessController", () => {
     controller = module.get<businessController>(businessController);
     service = module.get<businessService>(businessService);
   });
-
   describe("create", () => {
-    it("should call service.createTask with managerId and dto", async () => {
-      const taskData: CreateBusinessDto = {
+    it("should call service.createBusiness with managerId and dto", async () => {
+      const bussiness: CreateBusinessDto = {
         id: "iiiddd0",
         name: "name",
-        owner: 3,
         email: "poijhh@",
       };
       const spy = jest
         .spyOn(service, "createBusiness")
-        .mockResolvedValue(taskData);
-      const result = await controller.createBusiness(taskData);
-      expect(spy).toHaveBeenCalledWith(taskData);
-      expect(result).toEqual(taskData);
+        .mockResolvedValue(bussiness);
+      const result = await controller.createBusiness(
+        bussiness.id,
+        bussiness.name,
+        bussiness.email,
+      );
+      expect(spy).toHaveBeenCalledWith(bussiness);
+      expect(result).toEqual(bussiness);
     });
     it("result should be equal to TaskStub", async () => {
-      const taskData: CreateBusinessDto = {
+      const bussiness: CreateBusinessDto = {
         id: "idididid",
         name: "name",
-        owner: 3,
         email: "poijhh@",
       };
-      const taskStub = { ...taskData };
-      jest.spyOn(service, "createBusiness").mockResolvedValue(taskStub);
-      const result = await controller.createBusiness(taskData);
-      expect(result).toEqual(taskStub);
+      const createBussiness = { ...bussiness };
+      jest.spyOn(service, "createBusiness").mockResolvedValue(createBussiness);
+      const result = await controller.createBusiness(
+        bussiness.id,
+        bussiness.name,
+        bussiness.email,
+      );
+      expect(result).toEqual(createBussiness);
     });
   });
 });
