@@ -2,53 +2,83 @@ import {
   Controller,
   Get,
   Param,
-  UseInterceptors,
   Query,
   Body,
   Post,
   Delete,
   Put,
-} from "@nestjs/common";
-import { businessService } from "../services/business.service";
-import { Organization } from "../schema/organization.entity";
-import { CreateBusinessDto } from "../tdo/create-busin-first.dto";
-import { CreateBusinessDtoLevel2 } from "../tdo/create-busin-secons.dto";
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
+import { businessService } from '../services/business.service';
+import { CreateBusinessDto } from '../dto/create-busin-first.dto';
+import { CreateBusinessDtoLevel2 } from '../dto/create-busin-secons.dto';
 
 @Controller("business")
 export class businessController {
   constructor(private readonly businessService: businessService) {}
 
-  @Get()
-  async findAll(): Promise<Organization[]> {
-    return this.businessService.findAll();
+  @Get(':companyNumber')
+  async getBusinessByCompanyNumber(@Param("companyNumber") companyNumber: string) {
+    try {
+      const response = this.businessService.getBusinessByCompanyNumber(companyNumber);
+      if (!response) {
+        throw new HttpException("business not found", HttpStatus.BAD_REQUEST);
+      }
+      return response;
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  @Get(":id")
-  getBusinessById(@Param("id") id: string) {
-    return this.businessService.getBusinessById(id);
+  @Delete(':companyNumber')
+  deleteBusinessByCompanyNumber(@Param("companyNumber") companyNumber: string) {
+    try {
+      const response = this.businessService.deleteBusinessByCompanyNumber(companyNumber);
+      if (!response) {
+        throw new HttpException("business not found", HttpStatus.BAD_REQUEST);
+      }
+      return response;
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+  @Post('')
+  async createBusiness(
+    @Query("companyNumber") companyNumber: string,
+    @Query("name") name: string,
+    @Query("email") email: string,
+  ) {
+    try {
+      const response = this.businessService.createBusiness(
+        new CreateBusinessDto(companyNumber, name, email),
+      );
+      if (!response) {
+        throw new HttpException("business not found", HttpStatus.BAD_REQUEST);
+      }
+      return response;
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  @Delete(":id")
-  deleteBusinessById(@Param("id") id: string) {
-    return this.businessService.deleteBusinessById(id);
-  }
-  @Post(":data")
-  async createBusiness(@Body() data: CreateBusinessDto) {
-    return this.businessService.createBusiness(data);
-  }
-  @Post(":data")
-  async createBusinessLevel2(@Body() data: CreateBusinessDtoLevel2) {
-    return this.businessService.createBusinessLevel2(data);
-  }
-  @Put("id")
-  async updateBusinessById(
-    @Param("id") id: string,
-    @Body() newData: CreateBusinessDto,
-  ): Promise<CreateBusinessDto> {
-    const updatedBusiness = this.businessService.updateBusinessById(
-      id,
-      newData,
-    );
-    return updatedBusiness;
+  @Put(':companyNumber')
+  async updateBusinessByCompanyNumber(
+    @Query("companyNumber") companyNumber: string,
+    @Body() newData: CreateBusinessDtoLevel2,
+  ): Promise<CreateBusinessDtoLevel2> {
+    try {
+      const updatedBusiness = this.businessService.updateBusinessByCompanyNumber(
+        companyNumber,
+        newData,
+      );
+      if (!updatedBusiness) {
+        throw new HttpException("business not found", HttpStatus.BAD_REQUEST);
+      } else {
+        return updatedBusiness;
+      }
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }
