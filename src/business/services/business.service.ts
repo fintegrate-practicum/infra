@@ -1,17 +1,17 @@
-import { Injectable, Logger } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
-import { Organization } from "../schema/organization.entity";
-import { CreateBusinessDto } from "../tdo/create-busin-first.dto";
-import { CreateBusinessDtoLevel2 } from "../tdo/create-busin-secons.dto";
+import { Injectable, Logger } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Organization } from '../schema/organization.entity';
+import { CreateBusinessDto } from '../tdo/create-busin-first.dto';
+import { CreateBusinessDtoLevel2 } from '../tdo/create-busin-secons.dto';
 @Injectable()
 export class businessService {
   private readonly logger = new Logger(businessService.name);
 
   constructor(
-    @InjectModel("Organization")
+    @InjectModel('Organization')
     private readonly businessModel: Model<Organization>,
-  ) {}
+  ) { }
 
   async createBusiness(
     Organization: CreateBusinessDto,
@@ -24,19 +24,19 @@ export class businessService {
     }
   }
 
-  async getBusinessById(id: string): Promise<CreateBusinessDto> {
-    const business = await this.businessModel.findOne({ id: id }).exec();
+  async getBusinessByCompanyNumber(companyNumber: string): Promise<CreateBusinessDto> {
+    const business = await this.businessModel.findOne({ companyNumber: companyNumber }).exec();
     if (!business) {
       throw new Error("Business not found");
     }
     return business;
   }
-  async updateBusinessById(
-    id: string,
+  async updateBusinessByCompanyNumber(
+    companyNumber: string,
     Organization: CreateBusinessDtoLevel2,
   ): Promise<CreateBusinessDtoLevel2> {
     const business = await this.businessModel
-      .findOneAndUpdate({ id: id }, Organization, { new: true })
+      .findOneAndUpdate({ companyNumber: companyNumber }, Organization, { new: true })
       .exec();
     if (!business) {
       throw new Error("Business not found services");
@@ -44,9 +44,9 @@ export class businessService {
       return business;
     }
   }
-  async deleteBusinessById(id: string): Promise<CreateBusinessDto> {
+  async deleteBusinessByCompanyNumber(companyNumber: string): Promise<CreateBusinessDto> {
     const business = await this.businessModel
-      .findOneAndDelete({ id: id })
+      .findOneAndDelete({ companyNumber: companyNumber })
       .exec();
     if (!business) {
       throw new Error("Business not found delete");

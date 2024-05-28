@@ -1,8 +1,8 @@
-import { Test, TestingModule } from "@nestjs/testing";
-import { businessController } from "../controllers/business.controller";
-import { businessService } from "../services/business.service";
-import { CreateBusinessDto } from "../tdo/create-busin-first.dto";
-describe("BusinessController", () => {
+import { Test, TestingModule } from '@nestjs/testing';
+import { businessController } from '../controllers/business.controller';
+import { businessService } from '../services/business.service';
+import { CreateBusinessDto } from '../tdo/create-busin-first.dto';
+describe('BusinessController', () => {
   let controller: businessController;
   let service: businessService;
   beforeEach(async () => {
@@ -25,10 +25,10 @@ describe("BusinessController", () => {
     controller = module.get<businessController>(businessController);
     service = module.get<businessService>(businessService);
   });
-  describe("create", () => {
+  describe('create', () => {
     it("should call service.createBusiness with managerId and dto", async () => {
       const bussiness: CreateBusinessDto = {
-        id: "iiiddd0",
+        companyNumber: "iiiddd0",
         name: "name",
         email: "poijhh@",
       };
@@ -36,7 +36,7 @@ describe("BusinessController", () => {
         .spyOn(service, "createBusiness")
         .mockResolvedValue(bussiness);
       const result = await controller.createBusiness(
-        bussiness.id,
+        bussiness.companyNumber,
         bussiness.name,
         bussiness.email,
       );
@@ -45,14 +45,14 @@ describe("BusinessController", () => {
     });
     it("result should be equal to TaskStub", async () => {
       const bussiness: CreateBusinessDto = {
-        id: "idididid",
+        companyNumber: "idididid",
         name: "name",
         email: "poijhh@",
       };
       const createBussiness = { ...bussiness };
       jest.spyOn(service, "createBusiness").mockResolvedValue(createBussiness);
       const result = await controller.createBusiness(
-        bussiness.id,
+        bussiness.companyNumber,
         bussiness.name,
         bussiness.email,
       );
