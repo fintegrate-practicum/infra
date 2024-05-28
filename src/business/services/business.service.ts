@@ -4,7 +4,6 @@ import { Model } from "mongoose";
 import { Organization } from "../schema/organization.entity";
 import { CreateBusinessDto } from "../tdo/create-busin-first.dto";
 import { CreateBusinessDtoLevel2 } from "../tdo/create-busin-secons.dto";
-
 @Injectable()
 export class businessService {
   private readonly logger = new Logger(businessService.name);
@@ -17,52 +16,59 @@ export class businessService {
   async createBusiness(
     Organization: CreateBusinessDto,
   ): Promise<CreateBusinessDto> {
-    const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-    if (!regex.test(Organization.email))
+    const regexmail = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+    const regexcompanynumber = /^516[0-9]{6}$/i;
+    if (!regexmail.test(Organization.email))
       throw new HttpException("invalid email", HttpStatus.BAD_REQUEST);
-    if (await this.businessModel.findOne({ id: Organization.id }))
-      throw new HttpException("id exist", HttpStatus.BAD_REQUEST);
+    if (!regexcompanynumber.test(Organization.companyNumber))
+      throw new HttpException("invalid number company", HttpStatus.BAD_REQUEST);
+    if (
+      await this.businessModel.findOne({
+        companyNumber: Organization.companyNumber,
+      })
+    )
+      throw new HttpException("company number exist", HttpStatus.BAD_REQUEST);
     if (await this.businessModel.findOne({ email: Organization.email }))
       throw new HttpException("email exist", HttpStatus.BAD_REQUEST);
-    console.log(Organization);
     const newBusiness = new this.businessModel(Organization);
-    return await newBusiness.save();
-  }
-  async createBusinessLevel2(
-    Organization: CreateBusinessDtoLevel2,
-  ): Promise<CreateBusinessDtoLevel2> {
-    console.log(Organization);
-    const newBusiness = new this.businessModel(Organization);
-    return await newBusiness.save();
+    if (newBusiness) {
+      return await newBusiness.save();
+    } else {
+      return null;
+    }
   }
 
-  async findAll(): Promise<Organization[]> {
-    return this.businessModel.find().exec();
-  }
-
-  async getBusinessById(name: string): Promise<CreateBusinessDto> {
-    const business = await this.businessModel.findOne({ name: name }).exec();
+  async getBusinessByCompanyNumber(
+    companyNumber: string,
+  ): Promise<CreateBusinessDto> {
+    const business = await this.businessModel
+      .findOne({ companyNumber: companyNumber })
+      .exec();
     if (!business) {
       throw new Error("Business not found");
     }
     return business;
   }
-  async updateBusinessById(
-    id: string,
-    Organization: CreateBusinessDto,
-  ): Promise<CreateBusinessDto> {
+  async updateBusinessByCompanyNumber(
+    companyNumber: string,
+    Organization: CreateBusinessDtoLevel2,
+  ): Promise<CreateBusinessDtoLevel2> {
     const business = await this.businessModel
-      .findOneAndUpdate({ id: id }, Organization, { new: true })
+      .findOneAndUpdate({ companyNumber: companyNumber }, Organization, {
+        new: true,
+      })
       .exec();
     if (!business) {
-      throw new Error("Business not found");
+      throw new Error("Business not found services");
     } else {
       return business;
     }
   }
-  async deleteBusinessById(id: string): Promise<CreateBusinessDto> {
+  async deleteBusinessByCompanyNumber(
+    companyNumber: string,
+  ): Promise<CreateBusinessDto> {
     const business = await this.businessModel
-      .findOneAndDelete({ id: id })
+      .findOneAndDelete({ companyNumber: companyNumber })
       .exec();
     if (!business) {
       throw new Error("Business not found delete");

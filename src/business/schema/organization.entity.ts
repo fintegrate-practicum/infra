@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document, Types } from "mongoose";
+import { Document } from "mongoose";
 
 @Schema({ timestamps: true })
 export class Organization extends Document {
   @Prop()
-  id: string;
+  companyNumber: string;
 
   @Prop()
   description: string;
@@ -21,15 +21,15 @@ export class Organization extends Document {
   @Prop()
   phone: string;
 
-  @Prop({ type: Object })
-  address: {
-    city: string;
-    street: string;
-    num: number;
-  };
+  // @Prop()
+  // address: {
+  //   city: string;
+  //   street: string;
+  //   num: number;
+  // };
 
-  @Prop({ type: Types.ObjectId, ref: "employee" })
-  owner: Types.ObjectId;
+  @Prop()
+  owner: string;
 
   @Prop({ enum: ["Private", "public", "International", "global"] })
   businessSize: string;
