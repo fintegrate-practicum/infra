@@ -1,10 +1,11 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { Module } from "@nestjs/common";
+import { AppController } from "./app.controller";
+import { AppService } from "./app.service";
 import { businessModule } from "./business/moudle/business.moudle";
-import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-
+import { MongooseModule } from "@nestjs/mongoose";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { SettingsModule } from "./settings/module/settings.module";
+import { CategoriesModule } from "./settings/module/categories.module";
 
 @Module({
   imports: [
@@ -13,10 +14,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       isGlobal: true,
     }),
     businessModule,
+    SettingsModule,
+    CategoriesModule,
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => ({
-        uri:'mongodb://127.0.0.1:27017/gooood',
+        uri: config.get<string>("MONGODB_URI"),
       }),
       inject: [ConfigService],
     }),
@@ -24,4 +27,4 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

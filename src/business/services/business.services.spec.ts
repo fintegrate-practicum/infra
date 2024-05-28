@@ -1,9 +1,9 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { businessService } from './business.service';
-import { getModelToken } from '@nestjs/mongoose';
-import { Organization } from '../schema/organization.entity';
-import { Model } from 'mongoose';
-describe('BusinessService', () => {
+import { Test, TestingModule } from "@nestjs/testing";
+import { businessService } from "./business.service";
+import { getModelToken } from "@nestjs/mongoose";
+import { Organization } from "../schema/organization.entity";
+import { Model } from "mongoose";
+describe("BusinessService", () => {
   let service: businessService;
   let model;
   beforeEach(async () => {
@@ -22,7 +22,7 @@ describe('BusinessService', () => {
     service = module.get<businessService>(businessService);
     model = module.get<Model<Organization>>(getModelToken(Organization.name));
   });
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(service).toBeDefined();
   });
 });
