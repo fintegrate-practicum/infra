@@ -1,7 +1,7 @@
-import {  IsString } from "class-validator";
+import {  IsString } from 'class-validator';
 export class CreateBusinessDto {
   @IsString()
-  id: string;
+  companyNumber: string;
 
   @IsString()
   name: string;
@@ -9,8 +9,8 @@ export class CreateBusinessDto {
   @IsString()
   email: string;
 
-  constructor(id: string, name: string, email: string) {
-    this.id = id;
+  constructor(companyNumber: string, name: string, email: string) {
+    this.companyNumber = companyNumber;
     this.name = name;
     this.email = email;
   }
