@@ -9,19 +9,22 @@ import {
   Put,
   HttpException,
   HttpStatus,
-} from '@nestjs/common';
-import { businessService } from '../services/business.service';
-import { CreateBusinessDto } from '../tdo/create-busin-first.dto';
-import { CreateBusinessDtoLevel2 } from '../tdo/create-busin-secons.dto';
+} from "@nestjs/common";
+import { BusinessService } from "../services/business.service";
+import { CreateBusinessDto } from "../tdo/create-busin-first.dto";
+import { CreateBusinessDtoLevel2 } from "../tdo/create-busin-secons.dto";
 
-@Controller('business')
+@Controller("business")
 export class businessController {
-  constructor(private readonly businessService: businessService) {}
+  constructor(private readonly businessService: BusinessService) {}
 
-  @Get(':companyNumber')
-  async getBusinessByCompanyNumber(@Param("companyNumber") companyNumber: string) {
+  @Get(":companyNumber")
+  async getBusinessByCompanyNumber(
+    @Param("companyNumber") companyNumber: string,
+  ) {
     try {
-      const response = this.businessService.getBusinessByCompanyNumber(companyNumber);
+      const response =
+        this.businessService.getBusinessByCompanyNumber(companyNumber);
       if (!response) {
         throw new HttpException("business not found", HttpStatus.BAD_REQUEST);
       }
@@ -31,10 +34,11 @@ export class businessController {
     }
   }
 
-  @Delete(':companyNumber')
+  @Delete(":companyNumber")
   deleteBusinessByCompanyNumber(@Param("companyNumber") companyNumber: string) {
     try {
-      const response = this.businessService.deleteBusinessByCompanyNumber(companyNumber);
+      const response =
+        this.businessService.deleteBusinessByCompanyNumber(companyNumber);
       if (!response) {
         throw new HttpException("business not found", HttpStatus.BAD_REQUEST);
       }
@@ -43,7 +47,7 @@ export class businessController {
       throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-  @Post('')
+  @Post("")
   async createBusiness(
     @Query("companyNumber") companyNumber: string,
     @Query("name") name: string,
@@ -62,16 +66,17 @@ export class businessController {
     }
   }
 
-  @Put(':companyNumber')
+  @Put(":companyNumber")
   async updateBusinessByCompanyNumber(
     @Query("companyNumber") companyNumber: string,
     @Body() newData: CreateBusinessDtoLevel2,
   ): Promise<CreateBusinessDtoLevel2> {
     try {
-      const updatedBusiness = this.businessService.updateBusinessByCompanyNumber(
-        companyNumber,
-        newData,
-      );
+      const updatedBusiness =
+        this.businessService.updateBusinessByCompanyNumber(
+          companyNumber,
+          newData,
+        );
       if (!updatedBusiness) {
         throw new HttpException("business not found", HttpStatus.BAD_REQUEST);
       } else {
