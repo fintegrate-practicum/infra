@@ -2,7 +2,6 @@ import {
   Controller,
   Get,
   Param,
-  Query,
   Body,
   Post,
   Delete,
@@ -48,15 +47,9 @@ export class businessController {
     }
   }
   @Post("")
-  async createBusiness(
-    @Query("companyNumber") companyNumber: string,
-    @Query("name") name: string,
-    @Query("email") email: string,
-  ) {
+  async createBusiness(@Body() business: CreateBusinessDto) {
     try {
-      const response = this.businessService.createBusiness(
-        new CreateBusinessDto(companyNumber, name, email),
-      );
+      const response = this.businessService.createBusiness(business);
       if (!response) {
         throw new HttpException("business not found", HttpStatus.BAD_REQUEST);
       }
@@ -68,7 +61,7 @@ export class businessController {
 
   @Put(":companyNumber")
   async updateBusinessByCompanyNumber(
-    @Query("companyNumber") companyNumber: string,
+    @Param("companyNumber") companyNumber: string,
     @Body() newData: CreateBusinessDtoLevel2,
   ): Promise<CreateBusinessDtoLevel2> {
     try {
