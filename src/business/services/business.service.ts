@@ -4,6 +4,10 @@ import { Model } from 'mongoose';
 import { Organization } from '../schema/organization.entity';
 import { CreateBusinessDto } from '../tdo/create-busin-first.dto';
 import { CreateBusinessDtoLevel2 } from '../tdo/create-busin-secons.dto';
+
+import { RabbitPublisherService } from 'src/rabbit-publisher/rabbit-publisher.service';
+const code="4244"
+
 @Injectable()
 export class businessService {
   private readonly logger = new Logger(businessService.name);
@@ -11,17 +15,34 @@ export class businessService {
   constructor(
     @InjectModel('Organization')
     private readonly businessModel: Model<Organization>,
+    private readonly rabbitPublisherService: RabbitPublisherService,
+
   ) { }
 
   async createBusiness(
     Organization: CreateBusinessDto,
   ): Promise<CreateBusinessDto> {
     const newBusiness = new this.businessModel(Organization);
-    if (newBusiness) {
-      return await newBusiness.save();
+    let save:CreateBusinessDto;
+    if (newBusiness) {       
+    save= await newBusiness.save();
     } else {
       return null;
     }
+    const message = {
+      pattern: 'message_queue',
+      data: {
+        to: newBusiness.email,
+        message: code,
+      },
+    };
+    try{
+      await this.rabbitPublisherService.publishMessageToCommunication(message);
+
+    }catch(error){
+      console.error('Failed to publish message', error)
+    }
+    return save;
   }
 
   async getBusinessByCompanyNumber(companyNumber: string): Promise<CreateBusinessDto> {

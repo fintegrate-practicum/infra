@@ -1,9 +1,12 @@
 import { Controller, Get } from "@nestjs/common";
 import { AppService } from "./app.service";
+import { RabbitPublisherService } from 'src/rabbit-publisher/rabbit-publisher.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService,private readonly RabbitPublisherService:RabbitPublisherService) {
+
+  }
 
   @Get()
   getHello(): string {

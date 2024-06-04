@@ -4,6 +4,8 @@ import { AppService } from "./app.service";
 import { businessModule } from "./business/moudle/business.moudle";
 import { MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { RabbitPublisherService } from 'src/rabbit-publisher/rabbit-publisher.service';
+
 
 @Module({
   imports: [
@@ -21,6 +23,6 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,RabbitPublisherService],
 })
 export class AppModule {}

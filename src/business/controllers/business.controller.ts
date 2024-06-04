@@ -64,9 +64,11 @@ export class businessController {
 
   @Put(':companyNumber')
   async updateBusinessByCompanyNumber(
-    @Query("companyNumber") companyNumber: string,
+    @Param("companyNumber") companyNumber: string,
     @Body() newData: CreateBusinessDtoLevel2,
   ): Promise<CreateBusinessDtoLevel2> {
+    console.log(companyNumber);
+    
     try {
       const updatedBusiness = this.businessService.updateBusinessByCompanyNumber(
         companyNumber,
