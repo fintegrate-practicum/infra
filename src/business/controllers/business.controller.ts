@@ -9,13 +9,14 @@ import {
   HttpException,
   HttpStatus,
 } from "@nestjs/common";
-import { businessService } from "../services/business.service";
+import { BusinessService } from "../services/business.service";
 import { CreateBusinessDto } from "../tdo/create-busin-first.dto";
 import { CreateBusinessDtoLevel2 } from "../tdo/create-busin-secons.dto";
 
 @Controller("business")
+@Controller("business")
 export class businessController {
-  constructor(private readonly businessService: businessService) {}
+  constructor(private readonly businessService: BusinessService) {}
 
   @Get(":companyNumber")
   async getBusinessByCompanyNumber(
@@ -36,6 +37,7 @@ export class businessController {
   @Delete(":companyNumber")
   deleteBusinessByCompanyNumber(@Param("companyNumber") companyNumber: string) {
     try {
+
       const response =
         this.businessService.deleteBusinessByCompanyNumber(companyNumber);
       if (!response) {
@@ -46,6 +48,7 @@ export class businessController {
       throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
   @Post("")
   async createBusiness(@Body() business: CreateBusinessDto) {
     try {

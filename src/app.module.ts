@@ -4,10 +4,11 @@ import { AppService } from "./app.service";
 import { businessModule } from "./business/moudle/business.moudle";
 import { MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { AuthzModule } from "./authz/authz.module";
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    AuthzModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -15,10 +16,11 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => ({
-        uri: "mongodb://127.0.0.1:27017/gooood",
+        uri: config.get("MONGO_URI"),
       }),
       inject: [ConfigService],
     }),
+    AuthzModule,
   ],
   controllers: [AppController],
   providers: [AppService],
