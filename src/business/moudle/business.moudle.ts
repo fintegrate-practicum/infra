@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { businessService } from "../services/business.service";
+import { BusinessService } from "../services/business.service";
 import { businessController } from "../controllers/business.controller";
 import { MongooseModule } from "@nestjs/mongoose";
 import {
@@ -13,7 +13,7 @@ import {
       { name: Organization.name, schema: OrganizationSchema },
     ]),
   ],
-  providers: [businessService],
+  providers: [BusinessService],
   controllers: [businessController],
 })
 export class businessModule {}

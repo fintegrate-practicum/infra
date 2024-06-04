@@ -4,13 +4,13 @@ import { businessService } from "../services/business.service";
 import { CreateBusinessDto } from "../tdo/create-busin-first.dto";
 describe("BusinessController", () => {
   let controller: businessController;
-  let service: businessService;
+  let service: BusinessService;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [businessController],
       providers: [
         {
-          provide: businessService,
+          provide: BusinessService,
           useValue: {
             createBusiness: jest.fn(),
             deleteBusinessById: jest.fn(),
@@ -23,8 +23,9 @@ describe("BusinessController", () => {
       ],
     }).compile();
     controller = module.get<businessController>(businessController);
-    service = module.get<businessService>(businessService);
+    service = module.get<BusinessService>(BusinessService);
   });
+  describe("create", () => {
   describe("create", () => {
     it("should call service.createBusiness with managerId and dto", async () => {
       const bussiness: CreateBusinessDto = {

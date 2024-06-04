@@ -9,14 +9,14 @@ import {
   HttpException,
   HttpStatus,
 } from "@nestjs/common";
-import { businessService } from "../services/business.service";
+import { BusinessService } from "../services/business.service";
 import { CreateBusinessDto } from "../tdo/create-busin-first.dto";
 import { CreateBusinessDtoLevel2 } from "../tdo/create-busin-secons.dto";
 import * as fs from "fs";
 
 @Controller("business")
 export class businessController {
-  constructor(private readonly businessService: businessService) {}
+  constructor(private readonly businessService: BusinessService) {}
 
   @Get(":companyNumber")
   async getBusinessByCompanyNumber(
