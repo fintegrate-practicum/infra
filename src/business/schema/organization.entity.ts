@@ -29,7 +29,7 @@ export class Organization extends Document {
   // };
 
   @Prop()
-  owner: number;
+  owner: string;
 
   @Prop({ enum: ["Private", "public", "International", "global"] })
   businessSize: string;
