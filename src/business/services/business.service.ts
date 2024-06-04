@@ -22,11 +22,7 @@ export class BusinessService {
       throw new HttpException("invalid email", HttpStatus.BAD_REQUEST);
     if (!regexcompanynumber.test(Organization.companyNumber))
       throw new HttpException("invalid number company", HttpStatus.BAD_REQUEST);
-    if (
-      await this.businessModel.findOne({
-        companyNumber: Organization.companyNumber,
-      })
-    )
+    if (await this.businessModel.findOne({companyNumber: Organization.companyNumber}))
       throw new HttpException("company number exist", HttpStatus.BAD_REQUEST);
     if (await this.businessModel.findOne({ email: Organization.email }))
       throw new HttpException("email exist", HttpStatus.BAD_REQUEST);
@@ -50,6 +46,7 @@ export class BusinessService {
     }
     return business;
   }
+
   async updateBusinessByCompanyNumber(
     companyNumber: string,
     Organization: CreateBusinessDtoLevel2,

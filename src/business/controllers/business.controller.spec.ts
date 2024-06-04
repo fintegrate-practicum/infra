@@ -35,9 +35,13 @@ describe("BusinessController", () => {
       const spy = jest
         .spyOn(service, "createBusiness")
         .mockResolvedValue(bussiness);
+<<<<<<< HEAD
+      const result = await controller.createBusiness(bussiness);
+=======
       const result = await controller.createBusiness(
         bussiness
       );
+>>>>>>> main
       expect(spy).toHaveBeenCalledWith(bussiness);
       expect(result).toEqual(bussiness);
     });
@@ -49,9 +53,13 @@ describe("BusinessController", () => {
       };
       const createBussiness = { ...bussiness };
       jest.spyOn(service, "createBusiness").mockResolvedValue(createBussiness);
+<<<<<<< HEAD
+      const result = await controller.createBusiness(bussiness);
+=======
       const result = await controller.createBusiness(
         bussiness
       );
+>>>>>>> main
       expect(result).toEqual(createBussiness);
     });
   });
