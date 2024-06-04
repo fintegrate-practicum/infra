@@ -20,7 +20,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       issuer: `${process.env.AUTH0_ISSUER_BASE_URL}`,
       algorithms: ["RS256"],
     };
-    console.log("====================== config ======================", config);
     super(config);
   }
 
@@ -33,6 +32,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     } else if (aud !== process.env.AUTH0_AUDIENCE) {
       throw new HttpException("Invalid audience.", HttpStatus.UNAUTHORIZED);
     }
-    return { userId: sub, username: payload.username };
+    return { id: sub };
   }
 }
