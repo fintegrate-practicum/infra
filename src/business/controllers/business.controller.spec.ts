@@ -1,8 +1,8 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { businessController } from '../controllers/business.controller';
-import { businessService } from '../services/business.service';
-import { CreateBusinessDto } from '../tdo/create-busin-first.dto';
-describe('BusinessController', () => {
+import { Test, TestingModule } from "@nestjs/testing";
+import { businessController } from "../controllers/business.controller";
+import { businessService } from "../services/business.service";
+import { CreateBusinessDto } from "../tdo/create-busin-first.dto";
+describe("BusinessController", () => {
   let controller: businessController;
   let service: businessService;
   beforeEach(async () => {
@@ -25,7 +25,7 @@ describe('BusinessController', () => {
     controller = module.get<businessController>(businessController);
     service = module.get<businessService>(businessService);
   });
-  describe('create', () => {
+  describe("create", () => {
     it("should call service.createBusiness with managerId and dto", async () => {
       const bussiness: CreateBusinessDto = {
         companyNumber: "iiiddd0",

@@ -1,8 +1,8 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { businessService } from './business.service';
-import { getModelToken } from '@nestjs/mongoose';
-import { Organization } from '../schema/organization.entity';
-describe('BusinessService', () => {
+import { Test, TestingModule } from "@nestjs/testing";
+import { businessService } from "./business.service";
+import { getModelToken } from "@nestjs/mongoose";
+import { Organization } from "../schema/organization.entity";
+describe("BusinessService", () => {
   let service: businessService;
 
   beforeEach(async () => {
