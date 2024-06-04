@@ -8,10 +8,4 @@ export class CreateBusinessDto {
 
   @IsString()
   email: string;
-
-  constructor(companyNumber: string, name: string, email: string) {
-    this.companyNumber = companyNumber;
-    this.name = name;
-    this.email = email;
-  }
 }
