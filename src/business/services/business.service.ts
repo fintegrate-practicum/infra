@@ -38,6 +38,7 @@ export class BusinessService {
     }
   }
 
+
   async getBusinessByCompanyNumber(
     companyNumber: string,
   ): Promise<CreateBusinessDto> {
@@ -64,6 +65,7 @@ export class BusinessService {
       return business;
     }
   }
+
   async deleteBusinessByCompanyNumber(
     companyNumber: string,
   ): Promise<CreateBusinessDto> {

@@ -1,7 +1,7 @@
-import { Module } from '@nestjs/common';
-import { BusinessService } from '../services/business.service';
-import { businessController } from '../controllers/business.controller';
-import { MongooseModule } from '@nestjs/mongoose';
+import { Module } from "@nestjs/common";
+import { BusinessService } from "../services/business.service";
+import { businessController } from "../controllers/business.controller";
+import { MongooseModule } from "@nestjs/mongoose";
 import {
   Organization,
   OrganizationSchema,
