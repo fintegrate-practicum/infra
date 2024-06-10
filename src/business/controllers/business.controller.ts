@@ -11,8 +11,8 @@ import {
 }
 from "@nestjs/common";
 import { BusinessService } from "../services/business.service";
-import { CreateBusinessDto } from "../tdo/create-busin-first.dto";
-import { CreateBusinessDtoLevel2 } from "../tdo/create-busin-secons.dto";
+import { CreateBusinessDto } from "../dto/create-busin-first.dto";
+import { CreateBusinessDtoLevel2 } from "../dto/create-busin-secons.dto";
 import * as fs from "fs";
 
 @Controller("business")

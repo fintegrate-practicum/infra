@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { businessController } from "../controllers/business.controller";
 import { BusinessService } from "../services/business.service";
-import { CreateBusinessDto } from "../tdo/create-busin-first.dto";
+import { CreateBusinessDto } from "../dto/create-busin-first.dto";
 describe("BusinessController", () => {
   let controller: businessController;
   let service: BusinessService;
@@ -35,13 +35,9 @@ describe("BusinessController", () => {
       const spy = jest
         .spyOn(service, "createBusiness")
         .mockResolvedValue(bussiness);
-<<<<<<< HEAD
-      const result = await controller.createBusiness(bussiness);
-=======
       const result = await controller.createBusiness(
         bussiness
       );
->>>>>>> main
       expect(spy).toHaveBeenCalledWith(bussiness);
       expect(result).toEqual(bussiness);
     });
@@ -53,13 +49,9 @@ describe("BusinessController", () => {
       };
       const createBussiness = { ...bussiness };
       jest.spyOn(service, "createBusiness").mockResolvedValue(createBussiness);
-<<<<<<< HEAD
-      const result = await controller.createBusiness(bussiness);
-=======
       const result = await controller.createBusiness(
         bussiness
       );
->>>>>>> main
       expect(result).toEqual(createBussiness);
     });
   });
