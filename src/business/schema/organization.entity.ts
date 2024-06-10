@@ -1,5 +1,5 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Document } from "mongoose";
 
 @Schema({ timestamps: true })
 export class Organization extends Document {
@@ -29,7 +29,7 @@ export class Organization extends Document {
   // };
 
   @Prop()
-  owner: number;
+  owner: string;
 
   @Prop({ enum: ["Private", "public", "International", "global"] })
   businessSize: string;

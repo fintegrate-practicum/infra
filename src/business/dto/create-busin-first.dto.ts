@@ -1,4 +1,4 @@
-import {  IsString } from 'class-validator';
+import { IsString } from "class-validator";
 export class CreateBusinessDto {
   @IsString()
   companyNumber: string;
@@ -8,10 +8,4 @@ export class CreateBusinessDto {
 
   @IsString()
   email: string;
-
-  constructor(companyNumber: string, name: string, email: string) {
-    this.companyNumber = companyNumber;
-    this.name = name;
-    this.email = email;
-  }
 }

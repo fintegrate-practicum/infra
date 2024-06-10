@@ -6,9 +6,11 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { SettingsModule } from "./settings/module/settings.module";
 import { CategoriesModule } from "./settings/module/categories.module";
+import { AuthzModule } from "./authz/authz.module";
+
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    AuthzModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -22,6 +24,7 @@ import { CategoriesModule } from "./settings/module/categories.module";
       }),
       inject: [ConfigService],
     }),
+    AuthzModule,
   ],
   controllers: [AppController],
   providers: [AppService],
