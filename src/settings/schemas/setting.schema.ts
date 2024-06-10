@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { HydratedDocument } from "mongoose";
+import { HydratedDocument, Schema as MongooseSchema } from "mongoose";
 import { InputType } from "../input-settings.enum";
 
 export type SettingDocument = HydratedDocument<Setting>;
@@ -8,14 +8,22 @@ export type SettingDocument = HydratedDocument<Setting>;
 export class Setting {
   @Prop({
     type: String,
-    enum: InputType})
+    enum: InputType,
+    required:true,
+  })
   typeInput: InputType;
 
-  @Prop()
+  @Prop({
+    type: String,
+    required:true
+  })
   settingDesc: string;
 
-  @Prop()
-  options: string;
+  @Prop({ type: Map, of: String })
+  props: Record<string, any>;
+
+  @Prop({ type: Array })
+  children: Array<Record<string, any>>;
 }
 
 export const SettingSchema = SchemaFactory.createForClass(Setting);
