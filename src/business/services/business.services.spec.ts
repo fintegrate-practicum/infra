@@ -1,14 +1,14 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { businessService } from './business.service';
-import { getModelToken } from '@nestjs/mongoose';
-import { Organization } from '../schema/organization.entity';
-describe('BusinessService', () => {
+import { Test, TestingModule } from "@nestjs/testing";
+import { businessService } from "./business.service";
+import { getModelToken } from "@nestjs/mongoose";
+import { Organization } from "../schema/organization.entity";
+describe("BusinessService", () => {
   let service: businessService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        businessService,
+        BusinessService,
         {
           provide: getModelToken(Organization.name),
           useValue: {
@@ -18,7 +18,7 @@ describe('BusinessService', () => {
         },
       ],
     }).compile();
-    service = module.get<businessService>(businessService);
+    service = module.get<BusinessService>(BusinessService);
     // const model = module.get<Model<Organization>>(
     //   getModelToken(Organization.name),
     // );
