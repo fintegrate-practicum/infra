@@ -2,14 +2,15 @@ import {
   Controller,
   Get,
   Param,
-  Query,
   Body,
   Post,
   Delete,
   Put,
   HttpException,
   HttpStatus,
-} from "@nestjs/common";
+  Query,
+}
+from "@nestjs/common";
 import { BusinessService } from "../services/business.service";
 import { VerificationService } from "../../verification/vertification.services";
 
@@ -21,6 +22,7 @@ export class businessController {
   constructor(private readonly businessService: BusinessService,
     private readonly verificationService: VerificationService
     ) { }
+
 
   @Get(":companyNumber")
   async getBusinessByCompanyNumber(
@@ -41,6 +43,7 @@ export class businessController {
   @Delete(":companyNumber")
   deleteBusinessByCompanyNumber(@Param("companyNumber") companyNumber: string) {
     try {
+
       const response =
         this.businessService.deleteBusinessByCompanyNumber(companyNumber);
       if (!response) {
@@ -51,24 +54,11 @@ export class businessController {
       throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
   @Post("")
-  async createBusiness(
-    @Query("companyNumber") companyNumber: string,
-    @Query("name") name: string,
-    @Query("email") email: string,
-    @Query("code") code: string
-  ) {
+  async createBusiness(@Body() business: CreateBusinessDto) {
     try {
-
-
-      const validate = this.verificationService.validateVerificationCode(email, code)
-      if (!validate) {
-        throw new HttpException("code is not correct", HttpStatus.BAD_REQUEST);
-
-      }
-      const response = this.businessService.createBusiness(
-        new CreateBusinessDto(companyNumber, name, email),
-      );
+      const response = this.businessService.createBusiness(business);
       if (!response) {
         throw new HttpException("business not found", HttpStatus.BAD_REQUEST);
       }
@@ -83,10 +73,15 @@ export class businessController {
 
   @Put(":companyNumber")
   async updateBusinessByCompanyNumber(
-    @Query("companyNumber") companyNumber: string,
+    @Param("companyNumber") companyNumber: string,
     @Body() newData: CreateBusinessDtoLevel2,
   ): Promise<CreateBusinessDtoLevel2> {
+    console.log(companyNumber);
+    
     try {
+      const filepath = `./logo/company${companyNumber}.png`;
+      fs.writeFileSync(filepath, newData.logo, { encoding: "base64" });
+      newData.logo = filepath;
       const updatedBusiness =
         this.businessService.updateBusinessByCompanyNumber(
           companyNumber,

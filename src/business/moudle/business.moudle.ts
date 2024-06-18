@@ -1,10 +1,12 @@
 import { Module  } from "@nestjs/common";
 import { VerificationModule } from '../../verification/vertification.module';
 import { VerificationService } from '../../verification/vertification.services';
+import { BusinessService } from '../services/business.service';
+import { businessController } from '../controllers/business.controller';
+import { MongooseModule } from '@nestjs/mongoose';
+import { RabbitPublisherService } from 'src/rabbit-publisher/rabbit-publisher.service';
 
-import { BusinessService } from "../services/business.service";
-import { businessController } from "../controllers/business.controller";
-import { MongooseModule } from "@nestjs/mongoose";
+
 import {
   Organization,
   OrganizationSchema,
@@ -20,7 +22,7 @@ import { VerificationCode, VerificationCodeSchema } from "src/verification/verti
     // VerificationModule,
 
   ],
-  providers: [BusinessService,VerificationService],
+  providers: [BusinessService,VerificationService,RabbitPublisherService],
   controllers: [businessController],
 })
 export class businessModule {}

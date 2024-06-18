@@ -36,9 +36,7 @@ describe("BusinessController", () => {
         .spyOn(service, "createBusiness")
         .mockResolvedValue(bussiness);
       const result = await controller.createBusiness(
-        bussiness.companyNumber,
-        bussiness.name,
-        bussiness.email,
+        bussiness
       );
       expect(spy).toHaveBeenCalledWith(bussiness);
       expect(result).toEqual(bussiness);
@@ -52,9 +50,7 @@ describe("BusinessController", () => {
       const createBussiness = { ...bussiness };
       jest.spyOn(service, "createBusiness").mockResolvedValue(createBussiness);
       const result = await controller.createBusiness(
-        bussiness.companyNumber,
-        bussiness.name,
-        bussiness.email,
+        bussiness
       );
       expect(result).toEqual(createBussiness);
     });
