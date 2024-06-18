@@ -29,15 +29,17 @@ export class businessService {
     } else {
       return null;
     }
-    // const message = {
-    //   pattern: 'message_queue',
-    //   data: {
-    //     to: newBusiness.email,
-    //      message: code,
-    //   },
-    // };
-    // try{
-    //   await this.rabbitPublisherService.publishMessageToCommunication(message);
+
+    //פה להזיז לאיפה שרציתן
+    const message = {
+      pattern: 'message_queue',
+      data: {
+        to: newBusiness.email,
+        // message: code,
+      },
+    };
+    try{
+      await this.rabbitPublisherService.publishMessageToCommunication(message);
 
     }catch(error){
       console.error('Failed to publish message', error)
