@@ -69,6 +69,8 @@ export class businessController {
     @Param("companyNumber") companyNumber: string,
     @Body() newData: CreateBusinessDtoLevel2,
   ): Promise<CreateBusinessDtoLevel2> {
+    console.log(companyNumber);
+    
     try {
       const filepath = `./logo/company${companyNumber}.png`;
       fs.writeFileSync(filepath, newData.logo, { encoding: "base64" });

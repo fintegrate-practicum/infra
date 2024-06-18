@@ -2,8 +2,14 @@ import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Organization } from '../schema/organization.entity';
+
+
+import { RabbitPublisherService } from 'src/rabbit-publisher/rabbit-publisher.service';
+// const code="4244"
+
 import { CreateBusinessDto } from '../dto/create-busin-first.dto';
 import { CreateBusinessDtoLevel2 } from '../dto/create-busin-secons.dto';
+
 @Injectable()
 export class BusinessService {
   private readonly logger = new Logger(BusinessService.name);
@@ -11,7 +17,10 @@ export class BusinessService {
   constructor(
     @InjectModel("Organization")
     private readonly businessModel: Model<Organization>,
-  ) {}
+    private readonly rabbitPublisherService: RabbitPublisherService,
+
+  ) { }
+
 
   async createBusiness(
     Organization: CreateBusinessDto,
@@ -27,11 +36,28 @@ export class BusinessService {
     if (await this.businessModel.findOne({ email: Organization.email }))
       throw new HttpException("email exist", HttpStatus.BAD_REQUEST);
     const newBusiness = new this.businessModel(Organization);
-    if (newBusiness) {
-      return await newBusiness.save();
+    let save:CreateBusinessDto;
+    if (newBusiness) {       
+    save= await newBusiness.save();
     } else {
       return null;
     }
+
+    //פה להזיז לאיפה שרציתן
+    const message = {
+      pattern: 'message_queue',
+      data: {
+        to: newBusiness.email,
+        // message: code,
+      },
+    };
+    try{
+      await this.rabbitPublisherService.publishMessageToCommunication(message);
+
+    }catch(error){
+      console.error('Failed to publish message', error)
+    }
+    return save;
   }
 
 
