@@ -11,12 +11,16 @@ import {
   HttpStatus,
 } from "@nestjs/common";
 import { BusinessService } from "../services/business.service";
+import { VerificationService } from "../../verification/vertification.services";
+
 import { CreateBusinessDto } from "../dto/create-busin-first.dto";
 import { CreateBusinessDtoLevel2 } from "../dto/create-busin-secons.dto";
 
 @Controller("business")
 export class businessController {
-  constructor(private readonly businessService: BusinessService) {}
+  constructor(private readonly businessService: BusinessService,
+    private readonly verificationService: VerificationService
+    ) { }
 
   @Get(":companyNumber")
   async getBusinessByCompanyNumber(
@@ -52,8 +56,16 @@ export class businessController {
     @Query("companyNumber") companyNumber: string,
     @Query("name") name: string,
     @Query("email") email: string,
+    @Query("code") code: string
   ) {
     try {
+
+
+      const validate = this.verificationService.validateVerificationCode(email, code)
+      if (!validate) {
+        throw new HttpException("code is not correct", HttpStatus.BAD_REQUEST);
+
+      }
       const response = this.businessService.createBusiness(
         new CreateBusinessDto(companyNumber, name, email),
       );
@@ -65,6 +77,9 @@ export class businessController {
       throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
+
+
 
   @Put(":companyNumber")
   async updateBusinessByCompanyNumber(

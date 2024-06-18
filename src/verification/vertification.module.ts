@@ -6,11 +6,9 @@ import { VerificationCode, VerificationCodeSchema } from "./vertification.entity
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: VerificationCode.name, schema: VerificationCodeSchema },
-    ]),
+    MongooseModule.forFeature([{ name: VerificationCode.name, schema: VerificationCodeSchema }]),
   ],
   providers: [VerificationService],
   controllers: [VerificationController],
 })
-export class VerificationModule {}
+export class VerificationModule { }

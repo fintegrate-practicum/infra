@@ -6,16 +6,17 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { AuthzModule } from "./authz/authz.module";
 import { VerificationModule } from "./verification/vertification.module";
+// import { VerificationModule } from "./verification/vertification.module";
 
 
 @Module({
   imports: [
     AuthzModule,
-    VerificationModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
     businessModule,
+    VerificationModule,
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => ({
@@ -23,7 +24,7 @@ import { VerificationModule } from "./verification/vertification.module";
       }),
       inject: [ConfigService],
     }),
-    AuthzModule,
+    // AuthzModule,
   ],
   controllers: [AppController],
   providers: [AppService],
