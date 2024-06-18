@@ -6,7 +6,7 @@ import { CreateBusinessDto } from '../tdo/create-busin-first.dto';
 import { CreateBusinessDtoLevel2 } from '../tdo/create-busin-secons.dto';
 
 import { RabbitPublisherService } from 'src/rabbit-publisher/rabbit-publisher.service';
-const code="4244"
+// const code="4244"
 
 @Injectable()
 export class businessService {
@@ -29,15 +29,15 @@ export class businessService {
     } else {
       return null;
     }
-    const message = {
-      pattern: 'message_queue',
-      data: {
-        to: newBusiness.email,
-        message: code,
-      },
-    };
-    try{
-      await this.rabbitPublisherService.publishMessageToCommunication(message);
+    // const message = {
+    //   pattern: 'message_queue',
+    //   data: {
+    //     to: newBusiness.email,
+    //      message: code,
+    //   },
+    // };
+    // try{
+    //   await this.rabbitPublisherService.publishMessageToCommunication(message);
 
     }catch(error){
       console.error('Failed to publish message', error)
