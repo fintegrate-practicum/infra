@@ -8,16 +8,20 @@ import {
   Put,
   HttpException,
   HttpStatus,
+  Query,
 }
 from "@nestjs/common";
 import { BusinessService } from "../services/business.service";
+import { VerificationService } from "../../verification/vertification.services";
+
 import { CreateBusinessDto } from "../dto/create-busin-first.dto";
 import { CreateBusinessDtoLevel2 } from "../dto/create-busin-secons.dto";
-import * as fs from "fs";
 
 @Controller("business")
 export class businessController {
-  constructor(private readonly businessService: BusinessService) {}
+  constructor(private readonly businessService: BusinessService,
+    private readonly verificationService: VerificationService
+    ) { }
 
 
   @Get(":companyNumber")
@@ -63,6 +67,9 @@ export class businessController {
       throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
+
+
 
   @Put(":companyNumber")
   async updateBusinessByCompanyNumber(

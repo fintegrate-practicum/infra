@@ -8,6 +8,9 @@ import { RabbitPublisherService } from 'src/rabbit-publisher/rabbit-publisher.se
 import { SettingsModule } from "./settings/module/settings.module";
 import { CategoriesModule } from "./settings/module/categories.module";
 import { AuthzModule } from "./authz/authz.module";
+import { VerificationModule } from "./verification/vertification.module";
+// import { VerificationModule } from "./verification/vertification.module";
+
 
 
 @Module({
@@ -17,6 +20,7 @@ import { AuthzModule } from "./authz/authz.module";
       isGlobal: true,
     }),
     businessModule,
+    VerificationModule,
     SettingsModule,
     CategoriesModule,
     MongooseModule.forRootAsync({
@@ -26,7 +30,7 @@ import { AuthzModule } from "./authz/authz.module";
       }),
       inject: [ConfigService],
     }),
-    AuthzModule,
+    // AuthzModule,
   ],
   controllers: [AppController],
   providers: [AppService,RabbitPublisherService],

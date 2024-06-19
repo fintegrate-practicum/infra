@@ -20,7 +20,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@nestjs/common": "^10.0.0",
+    "@nestjs/axios": "^3.0.2",
+    "@nestjs/common": "^10.3.9",
     "@nestjs/config": "^3.2.2",
     "@nestjs/core": "^10.0.0",
     "@nestjs/jwt": "^10.2.0",
@@ -31,6 +32,7 @@
     "@nestjs/typeorm": "^10.0.2", 
     "amqplib": "^0.10.4",
     "auth0": "^4.4.0",
+    "axios": "^1.7.2",
     "class-validator": "^0.14.1",
     "fs": "^0.0.1-security",
     "dotenv": "^16.4.5",
