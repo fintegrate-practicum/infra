@@ -9,22 +9,26 @@ import {
   HttpException,
   HttpStatus,
   Query,
+  UseGuards,
 }
-from "@nestjs/common";
+  from "@nestjs/common";
 import { BusinessService } from "../services/business.service";
 import { VerificationService } from "../../verification/vertification.services";
 
 import { CreateBusinessDto } from "../dto/create-busin-first.dto";
 import { CreateBusinessDtoLevel2 } from "../dto/create-busin-secons.dto";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("business")
+@UseGuards(AuthGuard("jwt"))
 export class businessController {
   constructor(private readonly businessService: BusinessService,
     private readonly verificationService: VerificationService
-    ) { }
+  ) { }
 
 
   @Get(":companyNumber")
+  @UseGuards(AuthGuard("jwt"))
   async getBusinessByCompanyNumber(
     @Param("companyNumber") companyNumber: string,
   ) {
@@ -41,6 +45,7 @@ export class businessController {
   }
 
   @Delete(":companyNumber")
+  @UseGuards(AuthGuard("jwt"))
   deleteBusinessByCompanyNumber(@Param("companyNumber") companyNumber: string) {
     try {
 
@@ -56,6 +61,7 @@ export class businessController {
   }
 
   @Post("")
+  @UseGuards(AuthGuard("jwt"))
   async createBusiness(@Body() business: CreateBusinessDto) {
     try {
       const response = this.businessService.createBusiness(business);
@@ -72,12 +78,13 @@ export class businessController {
 
 
   @Put(":companyNumber")
+  @UseGuards(AuthGuard("jwt"))
   async updateBusinessByCompanyNumber(
     @Param("companyNumber") companyNumber: string,
     @Body() newData: CreateBusinessDtoLevel2,
   ): Promise<CreateBusinessDtoLevel2> {
     console.log(companyNumber);
-    
+
     try {
       const filepath = `./logo/company${companyNumber}.png`;
       fs.writeFileSync(filepath, newData.logo, { encoding: "base64" });
