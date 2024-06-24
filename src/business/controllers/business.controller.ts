@@ -13,9 +13,9 @@ import {
 from "@nestjs/common";
 import { BusinessService } from "../services/business.service";
 import { VerificationService } from "../../verification/vertification.services";
-
 import { CreateBusinessDto } from "../dto/create-busin-first.dto";
 import { CreateBusinessDtoLevel2 } from "../dto/create-busin-secons.dto";
+import * as fs from 'fs';
 
 @Controller("business")
 export class businessController {
@@ -43,7 +43,6 @@ export class businessController {
   @Delete(":companyNumber")
   deleteBusinessByCompanyNumber(@Param("companyNumber") companyNumber: string) {
     try {
-
       const response =
         this.businessService.deleteBusinessByCompanyNumber(companyNumber);
       if (!response) {
@@ -57,7 +56,7 @@ export class businessController {
 
   @Post("")
   async createBusiness(@Body() business: CreateBusinessDto) {
-    try {
+    try {      
       const response = this.businessService.createBusiness(business);
       if (!response) {
         throw new HttpException("business not found", HttpStatus.BAD_REQUEST);
