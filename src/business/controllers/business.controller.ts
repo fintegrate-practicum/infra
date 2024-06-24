@@ -13,7 +13,7 @@ import {
 from "@nestjs/common";
 import { BusinessService } from "../services/business.service";
 import { VerificationService } from "../../verification/vertification.services";
-
+import * as fs from 'fs';
 import { CreateBusinessDto } from "../dto/create-busin-first.dto";
 import { CreateBusinessDtoLevel2 } from "../dto/create-busin-secons.dto";
 
@@ -21,7 +21,7 @@ import { CreateBusinessDtoLevel2 } from "../dto/create-busin-secons.dto";
 export class businessController {
   constructor(private readonly businessService: BusinessService,
     private readonly verificationService: VerificationService
-    ) { }
+  ) { }
 
 
   @Get(":companyNumber")
@@ -77,11 +77,14 @@ export class businessController {
     @Body() newData: CreateBusinessDtoLevel2,
   ): Promise<CreateBusinessDtoLevel2> {
     console.log(companyNumber);
-    
+
     try {
-      const filepath = `./logo/company${companyNumber}.png`;
-      fs.writeFileSync(filepath, newData.logo, { encoding: "base64" });
-      newData.logo = filepath;
+      if (newData.logo) {
+        const filepath = `./logo/company${companyNumber}.png`;
+        fs.writeFileSync(filepath, newData.logo, { encoding: "base64" });
+        newData.logo = filepath;
+      }
+
       const updatedBusiness =
         this.businessService.updateBusinessByCompanyNumber(
           companyNumber,

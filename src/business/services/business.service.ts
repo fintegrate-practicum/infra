@@ -6,16 +6,17 @@ import { RabbitPublisherService } from 'src/rabbit-publisher/rabbit-publisher.se
 // const code="4244"
 import { CreateBusinessDto } from '../dto/create-busin-first.dto';
 import { CreateBusinessDtoLevel2 } from '../dto/create-busin-secons.dto';
+import { VerificationService } from 'src/verification/vertification.services';
 
 @Injectable()
 export class BusinessService {
-  private readonly logger = new Logger(BusinessService.name);
-  
+  private readonly logger = new Logger(BusinessService.name); 
 
   constructor(
     @InjectModel("Organization")
     private readonly businessModel: Model<Organization>,
     private readonly rabbitPublisherService: RabbitPublisherService,
+    private readonly verificationService: VerificationService
 
   ) { }
 
@@ -41,17 +42,16 @@ export class BusinessService {
       return null;
     }
 
-    //פה להזיז לאיפה שרציתן
+    const code =await this.verificationService.generateCode(newBusiness.email);
     const message = {
       pattern: 'message_queue',
       data: {
         to: newBusiness.email,
-        // message: code,
+        message: code,
       },
     };
     try{
       await this.rabbitPublisherService.publishMessageToCommunication(message);
-
     }catch(error){
       console.error('Failed to publish message', error)
     }
