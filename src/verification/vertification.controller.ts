@@ -9,26 +9,14 @@ export class VerificationController {
 
   @Post('create')
   async createVerificationCode(@Body('email') email: string) {
-
     try{
       const code =await this.verificationService.generateCode(email);
-      const message = {
-        pattern: 'message_queue',
-        data: {
-          to: email,
-          message: code,
-        },
-      };
-      // await this.rabbitPublisherService.publishMessageToCommunication(message);
+      return code;
     }
     catch(error){
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
- 
-  
-    //לשלוח את הערך הזה למייל
-    // return res;
   }
 
   @Get('validate') async validateVerificationCode(@Body('email') email: string, @Body('code') code: string,): Promise<boolean> {
