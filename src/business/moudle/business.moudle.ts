@@ -10,7 +10,7 @@ import { RabbitPublisherService } from 'src/rabbit-publisher/rabbit-publisher.se
 import {
   Organization,
   OrganizationSchema,
-} from "../schema/organization.entity";
+} from "src/business/schema/organization.entity";
 import { VerificationCode, VerificationCodeSchema } from "src/verification/vertification.entity";
 
 @Module({

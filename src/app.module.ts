@@ -9,6 +9,9 @@ import { SettingsModule } from "./settings/module/settings.module";
 import { CategoriesModule } from "./settings/module/categories.module";
 import { AuthzModule } from "./authz/authz.module";
 import { VerificationModule } from "./verification/vertification.module";
+import { HttpModule } from '@nestjs/axios';
+import { CurrentUserController } from './currentuser/currentUser.controlller';
+import { ExternalCurrentUserService } from './currentuser/currentUser.service';
 // import { VerificationModule } from "./verification/vertification.module";
 
 
@@ -31,8 +34,9 @@ import { VerificationModule } from "./verification/vertification.module";
       inject: [ConfigService],
     }),
     // AuthzModule,
+    HttpModule
   ],
-  controllers: [AppController],
-  providers: [AppService,RabbitPublisherService],
+  controllers: [AppController,CurrentUserController],
+  providers: [AppService,RabbitPublisherService,ExternalCurrentUserService],
 })
 export class AppModule {}

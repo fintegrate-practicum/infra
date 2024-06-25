@@ -80,7 +80,7 @@ export class businessController {
     
     try {
       const filepath = `./logo/company${companyNumber}.png`;
-      fs.writeFileSync(filepath, newData.logo, { encoding: "base64" });
+      // fs.writeFileSync(filepath, newData.logo, { encoding: "base64" });
       newData.logo = filepath;
       const updatedBusiness =
         this.businessService.updateBusinessByCompanyNumber(
