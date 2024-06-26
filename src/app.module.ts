@@ -4,18 +4,20 @@ import { AppService } from "./app.service";
 import { businessModule } from "./business/moudle/business.moudle";
 import { MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { RabbitPublisherService } from 'src/rabbit-publisher/rabbit-publisher.service';
+import { RabbitPublisherService } from "src/rabbit-publisher/rabbit-publisher.service";
 import { SettingsModule } from "./settings/module/settings.module";
 import { CategoriesModule } from "./settings/module/categories.module";
 import { AuthzModule } from "./authz/authz.module";
 import { VerificationModule } from "./verification/vertification.module";
 // import { VerificationModule } from "./verification/vertification.module";
-
-
+import { AdminController } from "./admin/admin.controller";
+import { HttpModule } from "@nestjs/axios";
+import { UserService } from "./user/user.service";
 
 @Module({
   imports: [
     AuthzModule,
+    HttpModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -32,7 +34,7 @@ import { VerificationModule } from "./verification/vertification.module";
     }),
     // AuthzModule,
   ],
-  controllers: [AppController],
-  providers: [AppService,RabbitPublisherService],
+  controllers: [AppController, AdminController],
+  providers: [AppService, RabbitPublisherService, UserService],
 })
 export class AppModule {}
