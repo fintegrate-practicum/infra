@@ -9,3 +9,4 @@ export class CreateBusinessDto {
   @IsString()
   email: string;
 }
+

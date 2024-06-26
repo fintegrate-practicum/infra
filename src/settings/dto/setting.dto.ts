@@ -7,7 +7,7 @@ import {
   ValidateNested,
 } from "class-validator";
 import { InputType } from "../input-settings.enum";
-import { Type } from "class-transformer";
+// import { Type } from "class-transformer";
 
 class ChildDto {
   @IsString()
@@ -30,7 +30,7 @@ export class CreateSettingDto {
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => ChildDto)
+  // @Type(() => ChildDto)
   children?: ChildDto[];
 
   @IsOptional()

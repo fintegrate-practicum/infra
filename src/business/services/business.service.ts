@@ -2,12 +2,11 @@ import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { Organization } from "../schema/organization.entity";
-
 import { RabbitPublisherService } from "src/rabbit-publisher/rabbit-publisher.service";
 // const code="4244"
-
 import { CreateBusinessDto } from "../dto/create-busin-first.dto";
 import { CreateBusinessDtoLevel2 } from "../dto/create-busin-secons.dto";
+import { VerificationService } from "src/verification/vertification.services";
 import { v4 as uuidv4 } from "uuid";
 
 @Injectable()
@@ -18,6 +17,7 @@ export class BusinessService {
     @InjectModel("Organization")
     private readonly businessModel: Model<Organization>,
     private readonly rabbitPublisherService: RabbitPublisherService,
+    private readonly verificationService: VerificationService,
   ) {}
 
   async createBusiness(
@@ -53,12 +53,12 @@ export class BusinessService {
       return null;
     }
 
-    //פה להזיז לאיפה שרציתן
+    const code = await this.verificationService.generateCode(newBusiness.email);
     const message = {
       pattern: "message_queue",
       data: {
         to: newBusiness.email,
-        // message: code,
+        message: code,
       },
     };
     try {
