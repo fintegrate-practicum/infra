@@ -10,7 +10,6 @@ import { CategoriesModule } from "./settings/module/categories.module";
 import { AuthzModule } from "./authz/authz.module";
 import { VerificationModule } from "./verification/vertification.module";
 // import { VerificationModule } from "./verification/vertification.module";
-import { AdminController } from "./admin/admin.controller";
 import { HttpModule } from "@nestjs/axios";
 import { UserService } from "./user/user.service";
 
@@ -34,7 +33,7 @@ import { UserService } from "./user/user.service";
     }),
     // AuthzModule,
   ],
-  controllers: [AppController, AdminController],
+  controllers: [AppController],
   providers: [AppService, RabbitPublisherService, UserService],
 })
 export class AppModule {}
