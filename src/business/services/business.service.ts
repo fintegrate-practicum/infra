@@ -1,14 +1,14 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Organization } from '../schema/organization.entity';
+import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import { Organization } from "../schema/organization.entity";
 
-
-import { RabbitPublisherService } from 'src/rabbit-publisher/rabbit-publisher.service';
+import { RabbitPublisherService } from "src/rabbit-publisher/rabbit-publisher.service";
 // const code="4244"
 
-import { CreateBusinessDto } from '../dto/create-busin-first.dto';
-import { CreateBusinessDtoLevel2 } from '../dto/create-busin-secons.dto';
+import { CreateBusinessDto } from "../dto/create-busin-first.dto";
+import { CreateBusinessDtoLevel2 } from "../dto/create-busin-secons.dto";
+import { v4 as uuidv4 } from "uuid";
 
 @Injectable()
 export class BusinessService {
@@ -18,9 +18,7 @@ export class BusinessService {
     @InjectModel("Organization")
     private readonly businessModel: Model<Organization>,
     private readonly rabbitPublisherService: RabbitPublisherService,
-
-  ) { }
-
+  ) {}
 
   async createBusiness(
     Organization: CreateBusinessDto,
@@ -31,35 +29,53 @@ export class BusinessService {
       throw new HttpException("invalid email", HttpStatus.BAD_REQUEST);
     if (!regexcompanynumber.test(Organization.companyNumber))
       throw new HttpException("invalid number company", HttpStatus.BAD_REQUEST);
-    if (await this.businessModel.findOne({companyNumber: Organization.companyNumber}))
+    if (
+      await this.businessModel.findOne({
+        companyNumber: Organization.companyNumber,
+      })
+    )
       throw new HttpException("company number exist", HttpStatus.BAD_REQUEST);
     if (await this.businessModel.findOne({ email: Organization.email }))
       throw new HttpException("email exist", HttpStatus.BAD_REQUEST);
-    const newBusiness = new this.businessModel(Organization);
-    let save:CreateBusinessDto;
-    if (newBusiness) {       
-    save= await newBusiness.save();
+
+    // Generate a unique linkUID
+    const linkUID = uuidv4();
+
+    const newBusiness = new this.businessModel({
+      ...Organization,
+      linkUID,
+    });
+
+    let save: CreateBusinessDto;
+    if (newBusiness) {
+      save = await newBusiness.save();
     } else {
       return null;
     }
 
     //פה להזיז לאיפה שרציתן
     const message = {
-      pattern: 'message_queue',
+      pattern: "message_queue",
       data: {
         to: newBusiness.email,
         // message: code,
       },
     };
-    try{
+    try {
       await this.rabbitPublisherService.publishMessageToCommunication(message);
-
-    }catch(error){
-      console.error('Failed to publish message', error)
+    } catch (error) {
+      console.error("Failed to publish message", error);
     }
     return save;
   }
 
+  async getBusinessByLinkUID(linkUID: string): Promise<CreateBusinessDto> {
+    const business = await this.businessModel.findOne({ linkUID }).exec();
+    if (!business) {
+      throw new Error("Business not found");
+    }
+    return business;
+  }
 
   async getBusinessByCompanyNumber(
     companyNumber: string,

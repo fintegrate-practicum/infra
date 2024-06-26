@@ -4,11 +4,10 @@ import { AppService } from "./app.service";
 import { businessModule } from "./business/moudle/business.moudle";
 import { MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { RabbitPublisherService } from 'src/rabbit-publisher/rabbit-publisher.service';
+import { RabbitPublisherService } from "src/rabbit-publisher/rabbit-publisher.service";
 import { SettingsModule } from "./settings/module/settings.module";
 import { CategoriesModule } from "./settings/module/categories.module";
 import { AuthzModule } from "./authz/authz.module";
-
 
 @Module({
   imports: [
@@ -29,6 +28,6 @@ import { AuthzModule } from "./authz/authz.module";
     AuthzModule,
   ],
   controllers: [AppController],
-  providers: [AppService,RabbitPublisherService],
+  providers: [AppService, RabbitPublisherService],
 })
 export class AppModule {}

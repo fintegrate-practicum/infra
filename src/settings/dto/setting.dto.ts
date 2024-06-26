@@ -1,4 +1,11 @@
-import { IsString, IsEnum, IsArray, IsObject, IsOptional, ValidateNested } from "class-validator";
+import {
+  IsString,
+  IsEnum,
+  IsArray,
+  IsObject,
+  IsOptional,
+  ValidateNested,
+} from "class-validator";
 import { InputType } from "../input-settings.enum";
 import { Type } from "class-transformer";
 

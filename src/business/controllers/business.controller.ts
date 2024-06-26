@@ -8,8 +8,7 @@ import {
   Put,
   HttpException,
   HttpStatus,
-}
-from "@nestjs/common";
+} from "@nestjs/common";
 import { BusinessService } from "../services/business.service";
 import { CreateBusinessDto } from "../dto/create-busin-first.dto";
 import { CreateBusinessDtoLevel2 } from "../dto/create-busin-secons.dto";
@@ -18,7 +17,6 @@ import * as fs from "fs";
 @Controller("business")
 export class businessController {
   constructor(private readonly businessService: BusinessService) {}
-
 
   @Get(":companyNumber")
   async getBusinessByCompanyNumber(
@@ -36,10 +34,22 @@ export class businessController {
     }
   }
 
+  @Get("linkUID/:linkUID")
+  async getBusinessByLinkUID(@Param("linkUID") linkUID: string) {
+    try {
+      const response = await this.businessService.getBusinessByLinkUID(linkUID);
+      if (!response) {
+        throw new HttpException("business not found", HttpStatus.BAD_REQUEST);
+      }
+      return response;
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   @Delete(":companyNumber")
   deleteBusinessByCompanyNumber(@Param("companyNumber") companyNumber: string) {
     try {
-
       const response =
         this.businessService.deleteBusinessByCompanyNumber(companyNumber);
       if (!response) {
@@ -70,7 +80,7 @@ export class businessController {
     @Body() newData: CreateBusinessDtoLevel2,
   ): Promise<CreateBusinessDtoLevel2> {
     console.log(companyNumber);
-    
+
     try {
       const filepath = `./logo/company${companyNumber}.png`;
       fs.writeFileSync(filepath, newData.logo, { encoding: "base64" });

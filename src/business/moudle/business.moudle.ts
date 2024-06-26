@@ -1,9 +1,8 @@
-import { Module } from '@nestjs/common';
-import { BusinessService } from '../services/business.service';
-import { businessController } from '../controllers/business.controller';
-import { MongooseModule } from '@nestjs/mongoose';
-import { RabbitPublisherService } from 'src/rabbit-publisher/rabbit-publisher.service';
-
+import { Module } from "@nestjs/common";
+import { BusinessService } from "../services/business.service";
+import { businessController } from "../controllers/business.controller";
+import { MongooseModule } from "@nestjs/mongoose";
+import { RabbitPublisherService } from "src/rabbit-publisher/rabbit-publisher.service";
 
 import {
   Organization,
@@ -16,7 +15,7 @@ import {
       { name: Organization.name, schema: OrganizationSchema },
     ]),
   ],
-  providers: [BusinessService,RabbitPublisherService], 
+  providers: [BusinessService, RabbitPublisherService],
   controllers: [businessController],
 })
 export class businessModule {}
