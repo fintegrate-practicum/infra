@@ -1,25 +1,23 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Organization } from '../schema/organization.entity';
-import { RabbitPublisherService } from 'src/rabbit-publisher/rabbit-publisher.service';
+import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import { Organization } from "../schema/organization.entity";
+import { RabbitPublisherService } from "src/rabbit-publisher/rabbit-publisher.service";
 // const code="4244"
-import { CreateBusinessDto } from '../dto/create-busin-first.dto';
-import { CreateBusinessDtoLevel2 } from '../dto/create-busin-secons.dto';
-import { VerificationService } from 'src/verification/vertification.services';
+import { CreateBusinessDto } from "../dto/create-busin-first.dto";
+import { CreateBusinessDtoLevel2 } from "../dto/create-busin-secons.dto";
+import { VerificationService } from "src/verification/vertification.services";
 
 @Injectable()
 export class BusinessService {
-  private readonly logger = new Logger(BusinessService.name); 
+  private readonly logger = new Logger(BusinessService.name);
 
   constructor(
     @InjectModel("Organization")
     private readonly businessModel: Model<Organization>,
     private readonly rabbitPublisherService: RabbitPublisherService,
-    private readonly verificationService: VerificationService
-
-  ) { }
-
+    private readonly verificationService: VerificationService,
+  ) {}
 
   async createBusiness(
     Organization: CreateBusinessDto,
@@ -30,34 +28,37 @@ export class BusinessService {
       throw new HttpException("invalid email", HttpStatus.BAD_REQUEST);
     if (!regexcompanynumber.test(Organization.companyNumber))
       throw new HttpException("invalid number company", HttpStatus.BAD_REQUEST);
-    if (await this.businessModel.findOne({companyNumber: Organization.companyNumber}))
+    if (
+      await this.businessModel.findOne({
+        companyNumber: Organization.companyNumber,
+      })
+    )
       throw new HttpException("company number exist", HttpStatus.BAD_REQUEST);
     if (await this.businessModel.findOne({ email: Organization.email }))
       throw new HttpException("email exist", HttpStatus.BAD_REQUEST);
     const newBusiness = new this.businessModel(Organization);
-    let save:CreateBusinessDto;
-    if (newBusiness) {       
-    save= await newBusiness.save();
+    let save: CreateBusinessDto;
+    if (newBusiness) {
+      save = await newBusiness.save();
     } else {
       return null;
     }
 
-    const code =await this.verificationService.generateCode(newBusiness.email);
+    const code = await this.verificationService.generateCode(newBusiness.email);
     const message = {
-      pattern: 'message_queue',
+      pattern: "message_queue",
       data: {
         to: newBusiness.email,
         message: code,
       },
     };
-    try{
+    try {
       await this.rabbitPublisherService.publishMessageToCommunication(message);
-    }catch(error){
-      console.error('Failed to publish message', error)
+    } catch (error) {
+      console.error("Failed to publish message", error);
     }
     return save;
   }
-
 
   async getBusinessByCompanyNumber(
     companyNumber: string,

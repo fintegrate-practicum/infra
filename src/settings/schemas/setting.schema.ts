@@ -9,13 +9,13 @@ export class Setting {
   @Prop({
     type: String,
     enum: InputType,
-    required:true,
+    required: true,
   })
   typeInput: InputType;
 
   @Prop({
     type: String,
-    required:true
+    required: true,
   })
   settingDesc: string;
 

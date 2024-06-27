@@ -1,5 +1,5 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Document } from "mongoose";
 
 @Schema({ timestamps: true })
 export class VerificationCode extends Document {
@@ -16,9 +16,8 @@ export class VerificationCode extends Document {
   expiresAt: Date;
 }
 
-export const VerificationCodeSchema = SchemaFactory.createForClass(VerificationCode);
-
-
+export const VerificationCodeSchema =
+  SchemaFactory.createForClass(VerificationCode);
 
 // import { Schema, Document } from 'mongoose';
 
@@ -33,4 +32,3 @@ export const VerificationCodeSchema = SchemaFactory.createForClass(VerificationC
 //   code: string;
 //   expiresAt: Date;
 // }
-

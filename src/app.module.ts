@@ -4,14 +4,13 @@ import { AppService } from "./app.service";
 import { businessModule } from "./business/moudle/business.moudle";
 import { MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { RabbitPublisherService } from 'src/rabbit-publisher/rabbit-publisher.service';
+import { RabbitPublisherService } from "src/rabbit-publisher/rabbit-publisher.service";
 import { SettingsModule } from "./settings/module/settings.module";
 import { CategoriesModule } from "./settings/module/categories.module";
 import { AuthzModule } from "./authz/authz.module";
 import { VerificationModule } from "./verification/vertification.module";
+import { deleteOldCodeModule } from "./deleteOldCode/deleteOldCode.module";
 // import { VerificationModule } from "./verification/vertification.module";
-
-
 
 @Module({
   imports: [
@@ -23,16 +22,17 @@ import { VerificationModule } from "./verification/vertification.module";
     VerificationModule,
     SettingsModule,
     CategoriesModule,
+    deleteOldCodeModule,
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => ({
-        uri: config.get<string>("MONGODB_URI"),
+        uri: config.get<string>("MONGO_URI"),
       }),
       inject: [ConfigService],
     }),
     // AuthzModule,
   ],
   controllers: [AppController],
-  providers: [AppService,RabbitPublisherService],
+  providers: [AppService, RabbitPublisherService],
 })
 export class AppModule {}

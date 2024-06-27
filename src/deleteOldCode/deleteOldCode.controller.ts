@@ -1,21 +1,16 @@
-import { Injectable } from "@nestjs/common";
+import { Controller, Get } from "@nestjs/common";
+import { deleteOldCodeService } from "./deleteOldCode.service";
 
-@Injectable()
-export class deleteOldCode{
-    verificationCodeModel: any;
+@Controller("verification")
+export class deleteOldCodeController {
+  constructor(private readonly deleteOldCodeService: deleteOldCodeService) {}
 
-    async deleteExpireCode(email: string, code: string): Promise<boolean> {
-        const verificationCode = await this.verificationCodeModel({ email, code }).exec();
-        if (!verificationCode) return false;
-        const isExpired = verificationCode.expiresAt < new Date();
-        if (isExpired) {
-          await this.removeVerificationCode(code);
-          return false;
-    
-        }
-        return true;
-      }
-
-    
-
+  @Get("/deleteExpiredCodes")
+  async deleteExpiredVerificationCodes(): Promise<void> {
+    try {
+      await this.deleteOldCodeService.deleteExpiredVerificationCodes();
+    } catch (error) {
+      throw new error(error);
+    }
+  }
 }
