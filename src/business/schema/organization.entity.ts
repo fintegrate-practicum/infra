@@ -39,6 +39,9 @@ export class Organization extends Document {
 
   @Prop()
   establishmentDate: string;
+
+  @Prop({ unique: true })
+  linkUID: string;
 }
 
 export const OrganizationSchema = SchemaFactory.createForClass(Organization);
