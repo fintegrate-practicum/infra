@@ -6,7 +6,7 @@ import { CurrentUser } from './currentUser.entity';
 export class CurrentUserController {
   constructor(private readonly externalCurrentUserService: ExternalCurrentUserService) {}
 
-  @Get('currentUser/:auth0_user_id')
+  @Get(':auth0_user_id')
   async showDetails(@Param('auth0_user_id') auth0_user_id: string): Promise<CurrentUser | null> {
     try {
       const user = await this.externalCurrentUserService.getUserDetails(auth0_user_id);

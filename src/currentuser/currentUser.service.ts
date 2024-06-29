@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 import { CurrentUser } from './currentUser.entity';
 import { HttpService } from '@nestjs/axios';
+import { User } from './user.entity';
 
 
 @Injectable()
@@ -12,15 +13,16 @@ export class ExternalCurrentUserService {
     try {
 
       const userDetailsResponse = await firstValueFrom(
-        this.httpService.get(`http://localhost:4000/workers/user/${auth0_user_id}`)
+        this.httpService.get(`http://localhost:3001/user/${auth0_user_id}`)   
       );
-      
+      const userId = userDetailsResponse.data.data._id; 
+
       const workerDetailsResponse = await firstValueFrom(
-        this.httpService.get(`http://localhost:4000/workers/employee/${auth0_user_id}`)
+        this.httpService.put(`http://localhost:3001/workers/${userId}`)
       );
       return {
-        userDetails: userDetailsResponse.data,
-        workerDetails: workerDetailsResponse.data,
+        userDetails: userDetailsResponse.data.data,
+        workerDetails: workerDetailsResponse.data.data,
       };
     } catch (error) {
       throw new Error('Failed to retrieve user from external server');
@@ -29,8 +31,8 @@ export class ExternalCurrentUserService {
 
   async updateUserDetails(auth0_user_id: string, newData: CurrentUser): Promise<any> {
     try {
-      const {user } = newData;
-      const {employee}=newData
+      const {user }:any = newData.user;
+      const {employee}:any=newData.employee
 
       const { userEmail, mobile } = user;
       const isValidEmail = /\S+@\S+\.\S+/.test(userEmail); 
@@ -39,15 +41,17 @@ export class ExternalCurrentUserService {
         throw new Error('Invalid input data');
       }
       const userDetailsResponse = await firstValueFrom(
-        this.httpService.put(`http://localhost:4000/workers/user/${auth0_user_id}`,user)
+        this.httpService.put(`http://localhost:3001/user/${auth0_user_id}`)   
       );
+      const userId = userDetailsResponse.data.data._id; 
+
       
       const workerDetailsResponse = await firstValueFrom(
-        this.httpService.put(`http://localhost:4000/workers/employee/${auth0_user_id}`,employee)
+        this.httpService.put(`http://localhost:3001/workers/${userId}`)
       );
       return {
-        userDetails: userDetailsResponse.data,
-        workerDetails: workerDetailsResponse.data,
+        userDetails: userDetailsResponse.data.data,
+        workerDetails: workerDetailsResponse.data.data,
       };
     } catch (error) {
       throw new Error('Failed to update user on external server');
