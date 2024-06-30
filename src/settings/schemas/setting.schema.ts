@@ -1,29 +1,22 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { HydratedDocument, Schema as MongooseSchema } from "mongoose";
-import { InputType } from "../input-settings.enum";
-
-export type SettingDocument = HydratedDocument<Setting>;
+import { Document } from "mongoose";
 
 @Schema()
-export class Setting {
-  @Prop({
-    type: String,
-    enum: InputType,
-    required:true,
-  })
-  typeInput: InputType;
+export class Setting extends Document {
+  @Prop({ required: true })
+  key: string;
 
-  @Prop({
-    type: String,
-    required:true
-  })
-  settingDesc: string;
+  @Prop({ required: true })
+  value: string;
 
-  @Prop({ type: Map, of: String })
-  props: Record<string, any>;
+  @Prop({ required: true })
+  settingDesc: string; // השדה הנוסף
 
-  @Prop({ type: Array })
-  children: Array<Record<string, any>>;
+  @Prop({ required: true })
+  typeInput: string; // השדה הנוסף
+
+  @Prop({ required: true, type: String })
+  service_id: string;
 }
 
 export const SettingSchema = SchemaFactory.createForClass(Setting);

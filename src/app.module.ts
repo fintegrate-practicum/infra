@@ -4,10 +4,10 @@ import { AppService } from "./app.service";
 import { businessModule } from "./business/moudle/business.moudle";
 import { MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { SettingsModule } from "./settings/module/settings.module";
-import { CategoriesModule } from "./settings/module/categories.module";
+// import { settingServiceModule } from "./settings/module/settingService.module";
 import { AuthzModule } from "./authz/authz.module";
-
+import { ServiceModule } from "./settings/module/service.module";
+import { SettingModule } from "./settings/module/settings.module"
 @Module({
   imports: [
     AuthzModule,
@@ -15,8 +15,11 @@ import { AuthzModule } from "./authz/authz.module";
       isGlobal: true,
     }),
     businessModule,
-    SettingsModule,
-    CategoriesModule,
+    // settingServiceModule,
+    // settingServiceModule,
+    ServiceModule,
+    SettingModule,
+    ServiceModule,
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => ({

@@ -1,8 +1,9 @@
 import { IsString, IsEnum, IsArray, IsObject, IsOptional, ValidateNested } from "class-validator";
 import { InputType } from "../input-settings.enum";
 import { Type } from "class-transformer";
+import { Types } from "mongoose";
 
-class ChildDto {
+export class SettingDto {
   @IsString()
   key: string;
 
@@ -10,7 +11,10 @@ class ChildDto {
   value: string;
 
   @IsString()
-  string: string;
+  settingDesc: string; // השדה הנוסף
+
+  @IsString()
+  typeInput: string; // השדה הנוסף
 }
 
 export class CreateSettingDto {
@@ -23,10 +27,13 @@ export class CreateSettingDto {
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => ChildDto)
-  children?: ChildDto[];
+  @Type(() => SettingDto )
+  children?: SettingDto [];
 
   @IsOptional()
   @IsObject()
   props?: Record<string, any>;
+
+  @IsString()
+  service_id: Types.ObjectId;
 }
