@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument } from "mongoose";
-// import { SettingSchema } from "./setting.schema";
-// import { Setting } from "./setting.schema";
+
 export type ServiceDocument = HydratedDocument<Service>;
 @Schema()
 export class Service {
@@ -22,8 +21,6 @@ export class Service {
     required:true
 })
   route:string;
-//   @Prop({ type: Array })
-//   settingService: Array<settingService>
 }
 
 export const ServicesSchema = SchemaFactory.createForClass(Service);

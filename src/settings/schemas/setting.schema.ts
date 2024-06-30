@@ -10,10 +10,10 @@ export class Setting extends Document {
   value: string;
 
   @Prop({ required: true })
-  settingDesc: string; // השדה הנוסף
+  settingDesc: string;
 
   @Prop({ required: true })
-  typeInput: string; // השדה הנוסף
+  typeInput: string; 
 
   @Prop({ required: true, type: String })
   service_id: string;

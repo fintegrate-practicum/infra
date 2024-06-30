@@ -20,16 +20,6 @@ export class ServiceController {
   async findOne(@Param('id') id: string): Promise<Service> {
     return await this.ServiecesService.findById(id);
   }
-//   @Get(':id')
-// async findOne(@Param('id') id: string): Promise<Service> {
-//   const service = await this.ServiecesService.findById(id).exec();
-//   if (!service) {
-//     throw new HttpException('Service not found', HttpStatus.NOT_FOUND);
-//   }
-//   const settings = await this.settingServiceModel.find({ service_id: id });
-//   service.settings = settings;
-//   return service;
-// }
 
   @Put(':id')
   async update(@Param('id') id: string, @Body() updateServiceDto: CreateServiceDto): Promise<Service> {

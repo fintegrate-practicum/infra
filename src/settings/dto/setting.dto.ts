@@ -11,10 +11,10 @@ export class SettingDto {
   value: string;
 
   @IsString()
-  settingDesc: string; // השדה הנוסף
+  settingDesc: string; 
 
   @IsString()
-  typeInput: string; // השדה הנוסף
+  typeInput: string; 
 }
 
 export class CreateSettingDto {
