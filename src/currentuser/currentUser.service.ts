@@ -5,6 +5,7 @@ import { HttpService } from '@nestjs/axios';
 import { User } from './user.entity';
 
 
+
 @Injectable()
 export class ExternalCurrentUserService {
   constructor(private readonly httpService: HttpService) {}
@@ -13,12 +14,12 @@ export class ExternalCurrentUserService {
     try {
 
       const userDetailsResponse = await firstValueFrom(
-        this.httpService.get(`http://localhost:3001/user/${auth0_user_id}`)   
+        this.httpService.get(`${process.env.VITE_WORKERS_SERVER_URL}/user/${auth0_user_id}`)
       );
       const userId = userDetailsResponse.data.data._id; 
 
       const workerDetailsResponse = await firstValueFrom(
-        this.httpService.put(`http://localhost:3001/workers/${userId}`)
+        this.httpService.get(`${process.env.VITE_WORKERS_SERVER_URL}/workers/${userId}`)
       );
       return {
         userDetails: userDetailsResponse.data.data,
@@ -41,13 +42,13 @@ export class ExternalCurrentUserService {
         throw new Error('Invalid input data');
       }
       const userDetailsResponse = await firstValueFrom(
-        this.httpService.put(`http://localhost:3001/user/${auth0_user_id}`)   
+        this.httpService.put(`${process.env.VITE_WORKERS_SERVER_URL}/${auth0_user_id}`)   
       );
       const userId = userDetailsResponse.data.data._id; 
 
       
       const workerDetailsResponse = await firstValueFrom(
-        this.httpService.put(`http://localhost:3001/workers/${userId}`)
+        this.httpService.put(`${process.env.VITE_WORKERS_SERVER_URL}/workers/${userId}`)
       );
       return {
         userDetails: userDetailsResponse.data.data,
