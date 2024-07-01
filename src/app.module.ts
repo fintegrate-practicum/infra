@@ -12,7 +12,6 @@ import { VerificationModule } from "./verification/vertification.module";
 // import { VerificationModule } from "./verification/vertification.module";
 import { HttpModule } from "@nestjs/axios";
 import { UserService } from "./user/user.service";
-
 @Module({
   imports: [
     AuthzModule,

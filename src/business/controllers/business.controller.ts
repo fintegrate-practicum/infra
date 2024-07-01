@@ -10,22 +10,21 @@ import {
   HttpStatus,
   Query,
   UseGuards,
-}
-from "@nestjs/common";
+} from "@nestjs/common";
 import { BusinessService } from "../services/business.service";
 import { VerificationService } from "../../verification/vertification.services";
 import { CreateBusinessDto } from "../dto/create-busin-first.dto";
 import { CreateBusinessDtoLevel2 } from "../dto/create-busin-secons.dto";
-import * as fs from 'fs';
+import * as fs from "fs";
 import { AuthGuard } from "@nestjs/passport";
 
 @Controller("business")
 @UseGuards(AuthGuard("jwt"))
 export class businessController {
-  constructor(private readonly businessService: BusinessService,
-    private readonly verificationService: VerificationService
-  ) { }
-
+  constructor(
+    private readonly businessService: BusinessService,
+    private readonly verificationService: VerificationService,
+  ) {}
 
   @Get(":companyNumber")
   @UseGuards(AuthGuard("jwt"))
@@ -35,6 +34,19 @@ export class businessController {
     try {
       const response =
         this.businessService.getBusinessByCompanyNumber(companyNumber);
+      if (!response) {
+        throw new HttpException("business not found", HttpStatus.BAD_REQUEST);
+      }
+      return response;
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @Get("linkUID/:linkUID")
+  async getBusinessByLinkUID(@Param("linkUID") linkUID: string) {
+    try {
+      const response = await this.businessService.getBusinessByLinkUID(linkUID);
       if (!response) {
         throw new HttpException("business not found", HttpStatus.BAD_REQUEST);
       }
@@ -62,7 +74,7 @@ export class businessController {
   @Post("")
   @UseGuards(AuthGuard("jwt"))
   async createBusiness(@Body() business: CreateBusinessDto) {
-    try {      
+    try {
       const response = this.businessService.createBusiness(business);
       if (!response) {
         throw new HttpException("business not found", HttpStatus.BAD_REQUEST);
@@ -73,9 +85,6 @@ export class businessController {
     }
   }
 
-
-
-
   @Put(":companyNumber")
   @UseGuards(AuthGuard("jwt"))
   async updateBusinessByCompanyNumber(
@@ -85,9 +94,12 @@ export class businessController {
     console.log(companyNumber);
 
     try {
-      const filepath = `./logo/company${companyNumber}.png`;
-      fs.writeFileSync(filepath, newData.logo, { encoding: "base64" });
-      newData.logo = filepath;
+      if (newData.logo) {
+        const filepath = `./logo/company${companyNumber}.png`;
+        fs.writeFileSync(filepath, newData.logo, { encoding: "base64" });
+        newData.logo = filepath;
+      }
+
       const updatedBusiness =
         this.businessService.updateBusinessByCompanyNumber(
           companyNumber,
