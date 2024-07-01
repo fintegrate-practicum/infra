@@ -14,8 +14,10 @@ export class ExternalCurrentUserService {
     try {
 
       const userDetailsResponse = await firstValueFrom(
-        this.httpService.get(`${process.env.VITE_WORKERS_SERVER_URL}/user/${auth0_user_id}`)
-      );
+        this.httpService.get(`${process.env.VITE_WORKERS_SERVER_URL}/user`, {
+          headers: { 'auth0-user-id': auth0_user_id },
+        })     
+       );
       const userId = userDetailsResponse.data.data._id; 
 
       const workerDetailsResponse = await firstValueFrom(
@@ -42,8 +44,9 @@ export class ExternalCurrentUserService {
         throw new Error('Invalid input data');
       }
       const userDetailsResponse = await firstValueFrom(
-        this.httpService.put(`${process.env.VITE_WORKERS_SERVER_URL}/${auth0_user_id}`)   
-      );
+        this.httpService.put(`${process.env.VITE_WORKERS_SERVER_URL}/user`, {
+          headers: { 'auth0-user-id': auth0_user_id },
+        })      );
       const userId = userDetailsResponse.data.data._id; 
 
       
