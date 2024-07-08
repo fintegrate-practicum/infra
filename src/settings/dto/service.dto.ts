@@ -1,6 +1,20 @@
-import { IsString, IsArray, ValidateNested } from "class-validator";
-import { Type } from "class-transformer";
-import { SettingServiceDto } from "./settingService.dto";
+import { IsString, ValidateNested, IsArray, IsObject } from 'class-validator';
+import { Type } from 'class-transformer';
+
+class SettingDto {
+  @IsObject()
+  setting_json: Record<string, any>;
+}
+
+class SettingServiceDto {
+  @IsString()
+  settingServiceName: string;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => SettingDto)
+  settings: SettingDto[];
+}
 
 export class CreateServiceDto {
   @IsString()

@@ -24,12 +24,8 @@ export class SettingService {
   }
 
   async update(id: string, updateSettingDto: CreateSettingDto): Promise<Setting | null> {
-    const updatedSetting = await this.SettingModel.findByIdAndUpdate(
-      id,
-      updateSettingDto,
-      { new: true },
-    );
-    return updatedSetting;
+    return this.SettingModel.findByIdAndUpdate(id, updateSettingDto, { new: true }).exec();
+
   }
 
   async delete(id: string): Promise<void> {
