@@ -43,7 +43,8 @@ export class businessController {
     }
   }
 
-  @Get("linkUID/:linkUID")
+  @Get("link/:linkUID")
+  @UseGuards(AuthGuard("jwt"))
   async getBusinessByLinkUID(@Param("linkUID") linkUID: string) {
     try {
       const response = await this.businessService.getBusinessByLinkUID(linkUID);
