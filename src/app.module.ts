@@ -10,11 +10,12 @@ import { CategoriesModule } from "./settings/module/categories.module";
 import { AuthzModule } from "./authz/authz.module";
 import { VerificationModule } from "./verification/vertification.module";
 import { deleteOldCodeModule } from "./deleteOldCode/deleteOldCode.module";
-// import { VerificationModule } from "./verification/vertification.module";
-
+import { HttpModule } from "@nestjs/axios";
+import { UserService } from "./user/user.service";
 @Module({
   imports: [
     AuthzModule,
+    HttpModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -33,6 +34,6 @@ import { deleteOldCodeModule } from "./deleteOldCode/deleteOldCode.module";
     // AuthzModule,
   ],
   controllers: [AppController],
-  providers: [AppService, RabbitPublisherService],
+  providers: [AppService, RabbitPublisherService, UserService],
 })
 export class AppModule {}

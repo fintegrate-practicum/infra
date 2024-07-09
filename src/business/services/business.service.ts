@@ -7,6 +7,7 @@ import { RabbitPublisherService } from "src/rabbit-publisher/rabbit-publisher.se
 import { CreateBusinessDto } from "../dto/create-busin-first.dto";
 import { CreateBusinessDtoLevel2 } from "../dto/create-busin-secons.dto";
 import { VerificationService } from "src/verification/vertification.services";
+import { v4 as uuidv4 } from "uuid";
 
 @Injectable()
 export class BusinessService {
@@ -36,7 +37,14 @@ export class BusinessService {
       throw new HttpException("company number exist", HttpStatus.BAD_REQUEST);
     if (await this.businessModel.findOne({ email: Organization.email }))
       throw new HttpException("email exist", HttpStatus.BAD_REQUEST);
-    const newBusiness = new this.businessModel(Organization);
+
+    // Generate a unique linkUID
+    const linkUID = uuidv4();
+
+    const newBusiness = new this.businessModel({
+      ...Organization,
+      linkUID,
+    });
     let save: CreateBusinessDto;
     if (newBusiness) {
       save = await newBusiness.save();
@@ -58,6 +66,15 @@ export class BusinessService {
       console.error("Failed to publish message", error);
     }
     return save;
+  }
+
+
+  async getBusinessByLinkUID(linkUID: string): Promise<CreateBusinessDto> {
+    const business = await this.businessModel.findOne({ linkUID }).exec();
+    if (!business) {
+      throw new Error("Business not found");
+    }
+    return business;
   }
 
   async getBusinessByCompanyNumber(

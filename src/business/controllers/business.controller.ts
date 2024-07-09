@@ -43,6 +43,20 @@ export class businessController {
     }
   }
 
+  @Get("link/:linkUID")
+  @UseGuards(AuthGuard("jwt"))
+  async getBusinessByLinkUID(@Param("linkUID") linkUID: string) {
+    try {
+      const response = await this.businessService.getBusinessByLinkUID(linkUID);
+      if (!response) {
+        throw new HttpException("business not found", HttpStatus.BAD_REQUEST);
+      }
+      return response;
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
   @Delete(":companyNumber")
   @UseGuards(AuthGuard("jwt"))
   deleteBusinessByCompanyNumber(@Param("companyNumber") companyNumber: string) {
