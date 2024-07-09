@@ -45,7 +45,6 @@ export class BusinessService {
       ...Organization,
       linkUID,
     });
-
     let save: CreateBusinessDto;
     if (newBusiness) {
       save = await newBusiness.save();
@@ -68,6 +67,7 @@ export class BusinessService {
     }
     return save;
   }
+
 
   async getBusinessByLinkUID(linkUID: string): Promise<CreateBusinessDto> {
     const business = await this.businessModel.findOne({ linkUID }).exec();

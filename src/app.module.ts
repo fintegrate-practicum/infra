@@ -9,7 +9,7 @@ import { SettingsModule } from "./settings/module/settings.module";
 import { CategoriesModule } from "./settings/module/categories.module";
 import { AuthzModule } from "./authz/authz.module";
 import { VerificationModule } from "./verification/vertification.module";
-// import { VerificationModule } from "./verification/vertification.module";
+import { deleteOldCodeModule } from "./deleteOldCode/deleteOldCode.module";
 import { HttpModule } from "@nestjs/axios";
 import { UserService } from "./user/user.service";
 @Module({
@@ -23,6 +23,7 @@ import { UserService } from "./user/user.service";
     VerificationModule,
     SettingsModule,
     CategoriesModule,
+    deleteOldCodeModule,
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => ({
