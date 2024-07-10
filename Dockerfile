@@ -1,5 +1,4 @@
-# docker file 
- #!/usr/bin/env sh
+
  FROM node:18
 
  WORKDIR /app
