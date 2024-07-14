@@ -3,7 +3,7 @@ import { UserService } from './user.service';
 import { HttpModule, HttpService } from '@nestjs/axios';
 import { of, throwError } from 'rxjs';
 import { ConfigModule } from '@nestjs/config';
-import { AxiosResponse } from 'axios';
+import { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { User } from './user.type';
 
@@ -48,7 +48,7 @@ describe('UserService', () => {
       status: 200,
       statusText: 'OK',
       headers: {},
-      config: {},
+      config: {} as InternalAxiosRequestConfig,
     };
 
     jest.spyOn(httpService, 'get').mockImplementation(() => of(axiosResponse));
@@ -80,7 +80,7 @@ describe('UserService', () => {
       status: 200,
       statusText: 'OK',
       headers: {},
-      config: {},
+      config: {} as InternalAxiosRequestConfig,
     };
 
     jest.spyOn(httpService, 'get').mockImplementation(() => of(axiosResponse));
