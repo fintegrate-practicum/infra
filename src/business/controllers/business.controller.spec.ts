@@ -2,6 +2,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { businessController } from "../controllers/business.controller";
 import { BusinessService } from "../services/business.service";
 import { CreateBusinessDto } from "../dto/create-busin-first.dto";
+import { VerificationService } from "src/verification/vertification.services";
 describe("BusinessController", () => {
   let controller: businessController;
   let service: BusinessService;
@@ -19,6 +20,10 @@ describe("BusinessController", () => {
             getBusinessById: jest.fn(),
             createBusinessLevel2: jest.fn(),
           },
+        },
+        {
+          provide: VerificationService,
+          useValue: {},
         },
       ],
     }).compile();
