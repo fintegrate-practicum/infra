@@ -2,17 +2,23 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { passportJwtSecret } from "jwks-rsa";
+import { UserService } from '../user/user.service';
+
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor() {
+  constructor(private readonly userService: UserService) {
     const config = {
       secretOrKeyProvider: passportJwtSecret({
         cache: true,
         rateLimit: true,
         jwksRequestsPerMinute: 5,
         jwksUri: `${process.env.AUTH0_ISSUER_BASE_URL}.well-known/jwks.json`,
-        handleSigningKeyError: (err) => console.error(err), // do it better in real app!
+        handleSigningKeyError: (err) =>{ console.error(err)
+          throw new HttpException("Error retrieving signing key.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
+        , // do it better in real app!
       }),
       ignoreExpiration: false,
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -32,6 +38,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     } else if (aud !== process.env.AUTH0_AUDIENCE) {
       throw new HttpException("Invalid audience.", HttpStatus.UNAUTHORIZED);
     }
-    return { id: sub };
+    const user = await this.userService.getUserById(sub);
+    if (!user) {
+        throw new HttpException("User not found.", HttpStatus.UNAUTHORIZED);
+    }
+    
+    return user;
   }
 }
