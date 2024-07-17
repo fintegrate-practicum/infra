@@ -16,10 +16,10 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install --only=production
+RUN npm ci --only=production --ignore-scripts
 
 COPY --from=builder /app/dist ./dist
 
-EXPOSE 4000
+EXPOSE 3000
 
 CMD ["node", "dist/main.js"]
