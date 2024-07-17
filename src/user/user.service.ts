@@ -16,17 +16,23 @@ export class UserService {
         );
     }
 
-    async getUserById(userId: string): Promise<User> {
+    async getUserById(req): Promise<User> {
+        const userId = req.headers['UserId'];
+    
+        if (!userId) {
+            throw new HttpException(
+                'User ID is missing in the request headers',
+                HttpStatus.BAD_REQUEST
+            );
+        }
+    
         try {
             const response = await this.httpService
                 .get<User>(`${this.workersServiceUrl}/admin/user/${userId}`)
                 .toPromise();
             return response.data;
         } catch (error) {
-            throw new HttpException(
-                "Failed to fetch user",
-                HttpStatus.INTERNAL_SERVER_ERROR
-            );
+            throw new HttpException('Failed to fetch user', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

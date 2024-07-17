@@ -27,6 +27,11 @@ describe('UserService', () => {
 
   it('getUserById should return user data', async () => {
     const userId = '123';
+    const req = {
+      headers: {
+          userId: userId
+      }
+  };
     const expectedResult: User = {
       userName: 'Test User',
       userEmail: 'test@example.com',
@@ -53,7 +58,7 @@ describe('UserService', () => {
 
     jest.spyOn(httpService, 'get').mockImplementation(() => of(axiosResponse));
 
-    const result = await service.getUserById(userId);
+    const result = await service.getUserById(req);
     expect(result).toEqual(expectedResult);
   });
 
@@ -91,10 +96,15 @@ describe('UserService', () => {
 
   it('should handle errors from HTTP service', async () => {
     const userId = '123';
+     const req = {
+        headers: {
+            userId: userId
+        }
+    };
 
     jest.spyOn(httpService, 'get').mockImplementation(() => throwError(new Error('Error')));
 
-    await expect(service.getUserById(userId)).rejects.toThrow(HttpException);
+    await expect(service.getUserById(req)).rejects.toThrow(HttpException);
     await expect(service.getUsersByBusinessId('456')).rejects.toThrow(HttpException);
-  });
+});
 });
