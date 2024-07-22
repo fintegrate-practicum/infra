@@ -18,5 +18,13 @@
     "forceConsistentCasingInFileNames": false,
     "jsx": "react-jsx",
     "noFallthroughCasesInSwitch": false
+  },
+  "watchOptions": {
+    "watchFile": "dynamicPriorityPolling",
+    "watchDirectory": "dynamicPriorityPolling",
+    "excludeDirectories": [
+      "**/node_modules",
+      "dist"
+    ]
   }
 }
