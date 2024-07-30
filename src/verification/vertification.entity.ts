@@ -18,8 +18,6 @@ export class VerificationCode extends Document {
 
 export const VerificationCodeSchema = SchemaFactory.createForClass(VerificationCode);
 
-
-
 // import { Schema, Document } from 'mongoose';
 
 // export const VerificationCodeSchema = new Schema({
@@ -33,4 +31,3 @@ export const VerificationCodeSchema = SchemaFactory.createForClass(VerificationC
 //   code: string;
 //   expiresAt: Date;
 // }
-

@@ -1,9 +1,11 @@
-import { Test, TestingModule } from "@nestjs/testing";
-import { BusinessService } from "./business.service";
-import { getModelToken } from "@nestjs/mongoose";
-import { Organization } from "../schema/organization.entity";
+import { Test, TestingModule } from '@nestjs/testing';
+import { BusinessService } from './business.service';
+import { getModelToken } from '@nestjs/mongoose';
+import { Organization } from '../schema/organization.entity';
+import { RabbitPublisherService } from 'src/rabbit-publisher/rabbit-publisher.service';
+import { VerificationService } from 'src/verification/vertification.services';
 
-describe("BusinessService", () => {
+describe('BusinessService', () => {
   let service: BusinessService;
 
   beforeEach(async () => {
@@ -17,6 +19,14 @@ describe("BusinessService", () => {
             create: jest.fn(),
           },
         },
+        {
+          provide: RabbitPublisherService,
+          useValue: {},
+        },
+        {
+          provide: VerificationService,
+          useValue: {},
+        },
       ],
     }).compile();
     service = module.get<BusinessService>(BusinessService);
@@ -24,7 +34,7 @@ describe("BusinessService", () => {
     //   getModelToken(Organization.name),
     // );
   });
-  it("should be defined", () => {
+  it('should be defined', () => {
     expect(service).toBeDefined();
   });
 });
