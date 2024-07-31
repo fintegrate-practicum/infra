@@ -7,7 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RabbitPublisherService } from 'src/rabbit-publisher/rabbit-publisher.service';
 import { SettingsModule } from './settings/module/settings.module';
 import { CategoriesModule } from './settings/module/categories.module';
-import { AuthzModule } from './authz/authz.module';
+import { AuthzModule } from 'fintegrate-auth';
 import { VerificationModule } from './verification/vertification.module';
 import { deleteOldCodeModule } from './deleteOldCode/deleteOldCode.module';
 import { HttpModule } from '@nestjs/axios';
@@ -31,7 +31,6 @@ import { UserService } from './user/user.service';
       }),
       inject: [ConfigService],
     }),
-    // AuthzModule,
   ],
   controllers: [AppController],
   providers: [AppService, RabbitPublisherService, UserService],
