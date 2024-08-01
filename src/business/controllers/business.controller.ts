@@ -91,13 +91,8 @@ export class businessController {
     @Param('companyNumber') companyNumber: string,
     @Body() newData: CreateBusinessDtoLevel2,
   ): Promise<CreateBusinessDtoLevel2> {
-    console.log("Update route accessed"); 
-    console.log(`Company Number: ${companyNumber}`);
-    console.log('New Data:', newData);
-
     try {
       if (newData.logo) {
-        console.log("Processing logo"); 
         const filepath = `./logo/company${companyNumber}.png`;
         fs.writeFileSync(filepath, newData.logo, { encoding: 'base64' });
         newData.logo = filepath;
@@ -107,14 +102,11 @@ export class businessController {
         companyNumber,
         newData,
       );
-      console.log("Business updated"); 
-
       if (!updatedBusiness) {
         throw new HttpException('Business not found', HttpStatus.BAD_REQUEST);
       }
       return updatedBusiness;
     } catch (error) {
-      console.error('Update error:', error); 
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
