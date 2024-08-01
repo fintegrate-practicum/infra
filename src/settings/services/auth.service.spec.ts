@@ -4,6 +4,7 @@ import { AuthService } from './create-user.service';
 import { RabbitPublisherService } from '../../rabbit-publisher/rabbit-publisher.service';
 import { ConfigService } from '@nestjs/config';
 import { of, throwError } from 'rxjs';
+//import { HttpResponse } from 'axios';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -64,9 +65,8 @@ describe('AuthService', () => {
         .mockReturnValueOnce(of({})); // Mocked response for registration link creation
 
       // Mock RabbitMQ service
-      (
-        rabbitPublisherService.publishMessageToCommunication as jest.Mock
-      ).mockReturnValueOnce(Promise.resolve());
+      (rabbitPublisherService.publishMessageToCommunication as jest.Mock)
+        .mockReturnValue(Promise.resolve());
 
       // Call the method
       const result = await authService.createUserAndNotify(email, name);
@@ -134,9 +134,8 @@ describe('AuthService', () => {
       };
 
       // Mock RabbitMQ service
-      (
-        rabbitPublisherService.publishMessageToCommunication as jest.Mock
-      ).mockReturnValueOnce(Promise.resolve());
+      (rabbitPublisherService.publishMessageToCommunication as jest.Mock)
+        .mockReturnValue(Promise.resolve());
 
       // Call the method
       await authService['sendNotificationToEmployee'](email, registrationLink);
@@ -153,9 +152,8 @@ describe('AuthService', () => {
         'https://mocked_auth0_domain/continue-registration?user_id=mocked_user_id';
 
       // Mock RabbitMQ service
-      (
-        rabbitPublisherService.publishMessageToCommunication as jest.Mock
-      ).mockReturnValueOnce(Promise.reject(new Error('Failed to send notification')));
+      (rabbitPublisherService.publishMessageToCommunication as jest.Mock)
+        .mockReturnValue(Promise.reject(new Error('Failed to send notification')));
 
       // Call the method and assert error is thrown
       await expect(

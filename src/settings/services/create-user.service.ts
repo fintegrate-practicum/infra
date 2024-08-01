@@ -39,11 +39,14 @@ export class AuthService {
   private async createRegistrationLink(email: string, name: string): Promise<string> {
     try {
       const response = await lastValueFrom(
-        this.httpService.post(`https://${this.AUTH0_DOMAIN}/api/v2/users`, {
-          email,
-          name,
-          connection: 'Username-Password-Authentication',
-        }),
+        this.httpService.post(
+          `https://${this.AUTH0_DOMAIN}/api/v2/users`,
+          {
+            email,
+            name,
+            connection: 'Username-Password-Authentication'
+          }
+        )
       );
 
       const userId = response.data.user_id; // מקבל את ה-ID של המשתמש שנוצר ב-Auth0
@@ -56,7 +59,7 @@ export class AuthService {
     }
   }
 
-  // שליחת הודעה לעובד
+  // שליחת הודעה לעובד 
   private async sendNotificationToEmployee(email: string, registrationLink: string) {
     try {
       const loginMessage = {
@@ -64,7 +67,7 @@ export class AuthService {
         data: {
           to: email,
           subject: 'Notification from Your App',
-          text: `Hello,\n\nThis is a notification from your application.\n\nFinish your registration using the following link:\n${registrationLink}`,
+          text: `Hello,\n\nThis is a notification from your application.\n\nFinish your registration using the following link:\n${registrationLink}`
         },
       };
 
@@ -80,16 +83,19 @@ export class AuthService {
   async getConnectionsForUser(email: string): Promise<any> {
     try {
       const response = await lastValueFrom(
-        this.httpService.get(`https://${this.AUTH0_DOMAIN}/api/v2/users-by-email`, {
-          params: { email },
-        }),
+        this.httpService.get(
+          `https://${this.AUTH0_DOMAIN}/api/v2/users-by-email`,
+          {
+            params: { email },
+          }
+        )
       );
 
       const userId = response.data[0].user_id;
       const userIdentity = await lastValueFrom(
         this.httpService.get(
-          `https://${this.AUTH0_DOMAIN}/api/v2/users/${userId}/identities`,
-        ),
+          `https://${this.AUTH0_DOMAIN}/api/v2/users/${userId}/identities`
+        )
       );
 
       return userIdentity.data;
@@ -102,12 +108,16 @@ export class AuthService {
   // פונקציה ליצירת משתמש ב-Auth0 והחזרת ה-ID של המשתמש
   private async createUserInAuth0(email: string, name: string): Promise<string> {
     try {
+      
       const response = await lastValueFrom(
-        this.httpService.post(`https://${this.AUTH0_DOMAIN}/api/v2/users`, {
-          email,
-          name,
-          connection: 'Username-Password-Authentication',
-        }),
+        this.httpService.post(
+          `https://${this.AUTH0_DOMAIN}/api/v2/users`,
+          {
+            email,
+            name,
+            connection: 'Username-Password-Authentication'
+          }
+        )
       );
       if (!response || !response.data) {
         throw new Error('Invalid response from Auth0 API');
@@ -116,9 +126,9 @@ export class AuthService {
       if (!user_id) {
         throw new Error('User ID not found in response');
       }
-
+      
       return response.data.user_id;
-
+      
       // מחזיר את ה-ID של המשתמש שנוצר ב-Auth0
     } catch (error) {
       console.error('Error calling Auth0 API: ', error);
