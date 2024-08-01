@@ -87,6 +87,7 @@ export class businessController {
     }
   }
   @Put(':companyNumber')
+  @UseGuards(AuthGuard("jwt"))
   async updateBusinessByCompanyNumber(
     @Param('companyNumber') companyNumber: string,
     @Body() newData: CreateBusinessDtoLevel2,
