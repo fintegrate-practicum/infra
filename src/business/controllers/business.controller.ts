@@ -82,14 +82,11 @@ export class businessController {
     }
   }
   @Put(':companyNumber')
+  @UseGuards(AuthGuard('jwt'))
   async updateBusinessByCompanyNumber(
     @Param('companyNumber') companyNumber: string,
     @Body() newData: CreateBusinessDtoLevel2,
   ): Promise<CreateBusinessDtoLevel2> {
-    console.log('Update route accessed'); // בדוק אם זה נדפס
-    console.log(`Company Number: ${companyNumber}`);
-    console.log('New Data:', newData);
-
     try {
       if (newData.logo) {
         console.log('Processing logo'); // הוסף הדפסות לבדוק אם זה עובר
@@ -102,14 +99,11 @@ export class businessController {
         companyNumber,
         newData,
       );
-      console.log('Business updated'); // הוסף הדפסות לבדוק אם זה עובר
-
       if (!updatedBusiness) {
         throw new HttpException('Business not found', HttpStatus.BAD_REQUEST);
       }
       return updatedBusiness;
     } catch (error) {
-      console.error('Update error:', error); // הוסף הדפסות לעקוב אחרי בעיות
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
