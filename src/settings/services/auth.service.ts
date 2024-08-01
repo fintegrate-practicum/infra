@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
-import { ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config'; // יבוא עבור ספריית הגדרות
 
 
 @Injectable()
