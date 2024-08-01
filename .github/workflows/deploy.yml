@@ -11,7 +11,7 @@ env:
   SERVICE: infra # Cloud Run service name
   REGION: us-central1 # Cloud Run region
   REPO: infra # Artifact Registry repository name
-  IMAGE: infra # Docker image name
+  IMAGE: communication # Docker image name
 
 jobs:
   deploy:
