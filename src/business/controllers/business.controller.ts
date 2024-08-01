@@ -1,3 +1,4 @@
+
 import {
   Controller,
   Get,
@@ -24,7 +25,7 @@ export class businessController {
   constructor(
     private readonly businessService: BusinessService,
     private readonly verificationService: VerificationService,
-  ) {}
+  ) { }
 
   @Get(":companyNumber")
   @UseGuards(AuthGuard("jwt"))
@@ -85,34 +86,29 @@ export class businessController {
       throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-
-  @Put(":companyNumber")
+  @Put(':companyNumber')
   @UseGuards(AuthGuard("jwt"))
   async updateBusinessByCompanyNumber(
-    @Param("companyNumber") companyNumber: string,
+    @Param('companyNumber') companyNumber: string,
     @Body() newData: CreateBusinessDtoLevel2,
   ): Promise<CreateBusinessDtoLevel2> {
-    console.log(companyNumber);
-
     try {
       if (newData.logo) {
         const filepath = `./logo/company${companyNumber}.png`;
-        fs.writeFileSync(filepath, newData.logo, { encoding: "base64" });
+        fs.writeFileSync(filepath, newData.logo, { encoding: 'base64' });
         newData.logo = filepath;
       }
 
-      const updatedBusiness =
-        this.businessService.updateBusinessByCompanyNumber(
-          companyNumber,
-          newData,
-        );
+      const updatedBusiness = await this.businessService.updateBusinessByCompanyNumber(
+        companyNumber,
+        newData,
+      );
       if (!updatedBusiness) {
-        throw new HttpException("business not found", HttpStatus.BAD_REQUEST);
-      } else {
-        return updatedBusiness;
+        throw new HttpException('Business not found', HttpStatus.BAD_REQUEST);
       }
+      return updatedBusiness;
     } catch (error) {
-      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }
