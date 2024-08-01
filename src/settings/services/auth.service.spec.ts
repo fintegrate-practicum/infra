@@ -4,6 +4,7 @@ import { AuthService } from './create-user.service';
 import { RabbitPublisherService } from '../../rabbit-publisher/rabbit-publisher.service';
 import { ConfigService } from '@nestjs/config';
 import { of, throwError } from 'rxjs';
+//import { HttpResponse } from 'axios';
 
 describe('AuthService', () => {
   let authService: AuthService;

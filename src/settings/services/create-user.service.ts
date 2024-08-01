@@ -127,7 +127,7 @@ export class AuthService {
         throw new Error('User ID not found in response');
       }
             
-      return response.data.user_id; // מחזיר את ה-ID של המשתמש שנוצר ב-Auth0
+      return response.data.user_id; 
     } catch (error) {
       console.error('Error calling Auth0 API: ', error);
       throw error;
