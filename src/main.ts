@@ -19,6 +19,9 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   app.enableCors();
-  await app.listen(4000);
+
+  // שימוש במשתנה הסביבה PORT
+  const port = process.env.PORT || 4000;
+  await app.listen(port);
 }
 bootstrap();
