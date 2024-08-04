@@ -29,7 +29,7 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           token_format: 'access_token'
-          workload_identity_provider: 'projects/927688248564/locations/global/workloadIdentityPools/github/providers/infra'
+          workload_identity_provider: 'projects/927688248564/locations/global/workloadIdentityPools/infra-pool/providers/infra-provider'
           service_account: 'my-service-account@fintegrate-f.iam.gserviceaccount.com'
 
       - name: Docker Auth
