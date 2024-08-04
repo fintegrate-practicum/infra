@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ServiceSettingsService } from '../services/serviceSettings.service';
-import { ServiceSettingsController } from '../controllers/settingsService.controller';
+import { ServiceSettingsController } from '../controllers/serviceSettings.controller';
 import {
   ServiceSettings,
   ServiceSettingsSchema,
