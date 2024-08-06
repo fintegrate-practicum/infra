@@ -9,9 +9,9 @@ env:
   GAR_LOCATION: us-central1
   SERVICE: infra
   REGION: us-central1
-  REPO: infra
+  REPO: fintegrate
   IMAGE: infrastructure-infra
-  WORKFLOW_NAME: workflow-infra
+  WORKFLOW_NAME: workflow-1
 
 jobs:
   deploy:
