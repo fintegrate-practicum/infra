@@ -11,7 +11,7 @@ env:
   REGION: us-central1
   REPO: communication
   IMAGE: infrastructure-communication
-  WORKFLOW_NAME: workflow-1
+  WORKFLOW_NAME: workflow-infra
 
 jobs:
   deploy:
