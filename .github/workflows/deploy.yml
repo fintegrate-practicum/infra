@@ -7,10 +7,10 @@ on:
 env:
   PROJECT_ID: fintegrate-f
   GAR_LOCATION: us-central1
-  SERVICE: communication
+  SERVICE: infra
   REGION: us-central1
-  REPO: communication
-  IMAGE: infrastructure-communication
+  REPO: infra
+  IMAGE: infrastructure-infra
   WORKFLOW_NAME: workflow-infra
 
 jobs:
