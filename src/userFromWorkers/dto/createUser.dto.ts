@@ -1,5 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsNotEmpty, IsObject, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsArray,
+  IsDate,
+  IsNotEmpty,
+  IsObject,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
+import { BusinessRole } from './businessRole.dto';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -77,4 +86,13 @@ export class CreateUserDto {
     street: string;
     num: number;
   };
+
+  @ApiProperty({
+    description: 'Business roles of the user',
+    example: [{ businessId: '12345', role: 'Manager' }],
+  })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => BusinessRole)
+  businessRoles: BusinessRole[];
 }
