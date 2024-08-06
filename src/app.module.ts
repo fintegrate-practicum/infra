@@ -5,8 +5,7 @@ import { businessModule } from './business/moudle/business.moudle';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RabbitPublisherService } from 'src/rabbit-publisher/rabbit-publisher.service';
-import { SettingsModule } from './settings/module/settings.module';
-import { CategoriesModule } from './settings/module/categories.module';
+import { ServiceSettingsModule } from './settings/module/serviceSettings.module';
 import { AuthzModule } from 'fintegrate-auth';
 import { VerificationModule } from './verification/vertification.module';
 import { deleteOldCodeModule } from './deleteOldCode/deleteOldCode.module';
@@ -21,8 +20,7 @@ import { UserService } from './user/user.service';
     }),
     businessModule,
     VerificationModule,
-    SettingsModule,
-    CategoriesModule,
+    ServiceSettingsModule,
     deleteOldCodeModule,
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
