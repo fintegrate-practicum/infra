@@ -11,8 +11,10 @@ import { VerificationModule } from './verification/vertification.module';
 import { deleteOldCodeModule } from './deleteOldCode/deleteOldCode.module';
 import { HttpModule } from '@nestjs/axios';
 import { UserService } from './user/user.service';
+import { LoggerModule } from 'logger/logger.module';
 @Module({
   imports: [
+    LoggerModule,
     AuthzModule,
     HttpModule,
     ConfigModule.forRoot({
