@@ -88,7 +88,7 @@ export class UserService {
       }
       return user;
     } catch (error) {
-      this.logger.log('Failed to find user by email', error.stack);
+      this.logger.error('Failed to find user by email', error.stack);
       throw new InternalServerErrorException('Error fetching user');
     }
   }
