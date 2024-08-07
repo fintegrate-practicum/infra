@@ -11,6 +11,7 @@ import { VerificationModule } from './verification/vertification.module';
 import { deleteOldCodeModule } from './deleteOldCode/deleteOldCode.module';
 import { HttpModule } from '@nestjs/axios';
 import { UserService } from './user/user.service';
+import { UserModule } from './userFromWorkers/module/users.module';
 @Module({
   imports: [
     AuthzModule,
@@ -20,6 +21,7 @@ import { UserService } from './user/user.service';
     }),
     businessModule,
     VerificationModule,
+    UserModule,
     ServiceSettingsModule,
     deleteOldCodeModule,
     MongooseModule.forRootAsync({
