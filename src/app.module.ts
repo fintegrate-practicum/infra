@@ -21,9 +21,7 @@ import { UserModule } from './userFromWorkers/module/users.module';
     }),
     businessModule,
     VerificationModule,
-    SettingsModule,
     UserModule,
-    CategoriesModule,
     ServiceSettingsModule,
     deleteOldCodeModule,
     MongooseModule.forRootAsync({
