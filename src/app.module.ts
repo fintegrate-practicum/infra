@@ -11,10 +11,10 @@ import { VerificationModule } from './verification/vertification.module';
 import { deleteOldCodeModule } from './deleteOldCode/deleteOldCode.module';
 import { HttpModule } from '@nestjs/axios';
 import { UserService } from './user/user.service';
-import { LoggerModule } from 'logger/logger.module';
+import { PapertrailLogger } from './logger';
+
 @Module({
   imports: [
-    LoggerModule,
     AuthzModule,
     HttpModule,
     ConfigModule.forRoot({
@@ -33,6 +33,6 @@ import { LoggerModule } from 'logger/logger.module';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, RabbitPublisherService, UserService],
+  providers: [AppService, RabbitPublisherService, UserService, PapertrailLogger],
 })
 export class AppModule {}

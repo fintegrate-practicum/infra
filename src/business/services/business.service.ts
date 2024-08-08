@@ -1,42 +1,40 @@
-import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
-import { Organization } from "../schema/organization.entity";
-import { RabbitPublisherService } from "src/rabbit-publisher/rabbit-publisher.service";
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Organization } from '../schema/organization.entity';
+import { RabbitPublisherService } from 'src/rabbit-publisher/rabbit-publisher.service';
 // const code="4244"
-import { CreateBusinessDto } from "../dto/create-busin-first.dto";
-import { CreateBusinessDtoLevel2 } from "../dto/create-busin-secons.dto";
-import { VerificationService } from "src/verification/vertification.services";
-import { v4 as uuidv4 } from "uuid";
+import { CreateBusinessDto } from '../dto/create-busin-first.dto';
+import { CreateBusinessDtoLevel2 } from '../dto/create-busin-secons.dto';
+import { VerificationService } from 'src/verification/vertification.services';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class BusinessService {
   private readonly logger = new Logger(BusinessService.name);
 
   constructor(
-    @InjectModel("Organization")
+    @InjectModel('Organization')
     private readonly businessModel: Model<Organization>,
     private readonly rabbitPublisherService: RabbitPublisherService,
     private readonly verificationService: VerificationService,
   ) {}
 
-  async createBusiness(
-    Organization: CreateBusinessDto,
-  ): Promise<CreateBusinessDto> {
+  async createBusiness(Organization: CreateBusinessDto): Promise<CreateBusinessDto> {
     const regexmail = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     const regexcompanynumber = /^516[0-9]{6}$/i;
     if (!regexmail.test(Organization.email))
-      throw new HttpException("invalid email", HttpStatus.BAD_REQUEST);
+      throw new HttpException('invalid email', HttpStatus.BAD_REQUEST);
     if (!regexcompanynumber.test(Organization.companyNumber))
-      throw new HttpException("invalid number company", HttpStatus.BAD_REQUEST);
+      throw new HttpException('invalid number company', HttpStatus.BAD_REQUEST);
     if (
       await this.businessModel.findOne({
         companyNumber: Organization.companyNumber,
       })
     )
-      throw new HttpException("company number exist", HttpStatus.BAD_REQUEST);
+      throw new HttpException('company number exist', HttpStatus.BAD_REQUEST);
     if (await this.businessModel.findOne({ email: Organization.email }))
-      throw new HttpException("email exist", HttpStatus.BAD_REQUEST);
+      throw new HttpException('email exist', HttpStatus.BAD_REQUEST);
 
     // Generate a unique linkUID
     const linkUID = uuidv4();
@@ -54,7 +52,7 @@ export class BusinessService {
 
     const code = await this.verificationService.generateCode(newBusiness.email);
     const message = {
-      pattern: "message_queue",
+      pattern: 'message_queue',
       data: {
         to: newBusiness.email,
         message: code,
@@ -63,28 +61,25 @@ export class BusinessService {
     try {
       await this.rabbitPublisherService.publishMessageToCommunication(message);
     } catch (error) {
-      console.error("Failed to publish message", error);
+      this.logger.error('Failed to publish message', error);
     }
     return save;
   }
 
-
   async getBusinessByLinkUID(linkUID: string): Promise<CreateBusinessDto> {
     const business = await this.businessModel.findOne({ linkUID }).exec();
     if (!business) {
-      throw new Error("Business not found");
+      throw new Error('Business not found');
     }
     return business;
   }
 
-  async getBusinessByCompanyNumber(
-    companyNumber: string,
-  ): Promise<CreateBusinessDto> {
+  async getBusinessByCompanyNumber(companyNumber: string): Promise<CreateBusinessDto> {
     const business = await this.businessModel
       .findOne({ companyNumber: companyNumber })
       .exec();
     if (!business) {
-      throw new Error("Business not found");
+      throw new Error('Business not found');
     }
     return business;
   }
@@ -99,20 +94,18 @@ export class BusinessService {
       })
       .exec();
     if (!business) {
-      throw new Error("Business not found services");
+      throw new Error('Business not found services');
     } else {
       return business;
     }
   }
 
-  async deleteBusinessByCompanyNumber(
-    companyNumber: string,
-  ): Promise<CreateBusinessDto> {
+  async deleteBusinessByCompanyNumber(companyNumber: string): Promise<CreateBusinessDto> {
     const business = await this.businessModel
       .findOneAndDelete({ companyNumber: companyNumber })
       .exec();
     if (!business) {
-      throw new Error("Business not found delete");
+      throw new Error('Business not found delete');
     }
     return business;
   }
