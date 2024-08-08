@@ -92,6 +92,9 @@
     "testEnvironment": "node",
     "moduleNameMapper": {
       "^src/(.*)$": "<rootDir>/$1"
-    }
+    },
+    "setupFilesAfterEnv": [
+      "<rootDir>/setupTests.ts"
+    ]
   }
 }

@@ -27,30 +27,40 @@ export class UserService {
     return user;
   }
 
-  async checkAndAddUser(
-    auth0_user_id: string,
-    emailFromHeaders: string,
-  ): Promise<string> {
-    if (!auth0_user_id) throw new BadRequestException('Auth0 user ID not provided');
-
-    if (!emailFromHeaders) {
+  async checkAndAddUser(user: any): Promise<string> {
+    const user_id_from_metadate = user.user_id.split('|');
+    const auth0_user_id = user_id_from_metadate[1];
+    if (!auth0_user_id) {
+      throw new BadRequestException('Auth0 user ID not provided');
+    }
+    if (!user.email) {
       throw new BadRequestException('user email not provided');
     }
-
-    const existingUserByAuth0Id = await this.findOneByUserAuth0Id(auth0_user_id);
+    let existingUserByAuth0Id: User;
+    try {
+      existingUserByAuth0Id = await this.findOneByUserAuth0Id(auth0_user_id);
+    } catch (error) {
+      this.logger.log(`user with ${auth0_user_id} isn't exist`);
+    }
     if (existingUserByAuth0Id) {
       return `User with id ${auth0_user_id} already exists.`;
     }
-
-    const existingUserByEmail = await this.findOneByEmail(emailFromHeaders);
+    let existingUserByEmail: User;
+    try {
+      existingUserByEmail = await this.findOneByEmail(user.email);
+    } catch (error) {
+      this.logger.log('existingUserByEmail');
+    }
     if (existingUserByEmail) {
       await this.updateAuth0UserId(existingUserByEmail, auth0_user_id);
-      return `User with email ${emailFromHeaders} already exists and was updated with the new ID ${auth0_user_id}.`;
+      return `User with email ${user.email} already exists and was updated with the new ID ${auth0_user_id}.`;
     }
-
-    const newUser = new User();
+    const newUser = new CreateUserDto();
     newUser.auth0_user_id = auth0_user_id;
-    newUser.userEmail = emailFromHeaders;
+    newUser.userEmail = user.email;
+    newUser.userName = user.name;
+    newUser.registeredAt = user.created_at;
+    newUser.lastLogin = user.last_login;
     await this.createUser(newUser);
     return 'User added successfully.';
   }
@@ -62,13 +72,13 @@ export class UserService {
         this.logger.error(`user with the id ${userId} was not found`);
         throw new NotFoundException(`user with the id ${userId} was not found`);
       }
-
       return user;
     } catch (error) {
       this.logger.error('Failed to find user', error.stack);
       throw new InternalServerErrorException('Error fetching user');
     }
   }
+
   async findOneByEmail(email: string): Promise<User | undefined> {
     try {
       const user = await this.userModel.findOne({ userEmail: email }).exec();
@@ -171,5 +181,36 @@ export class UserService {
         );
       }
     }
+  }
+
+  async getUserBusinesses(
+    userId: string,
+  ): Promise<{ businessId: string; role: string }[]> {
+    const user = await this.findOneByUserId(userId);
+    if (!user) {
+      throw new NotFoundException(`User with ID ${userId} not found`);
+    }
+    return user.businessRoles;
+  }
+
+  async getUserRoleInBusiness(
+    userId: string,
+    businessId: string,
+  ): Promise<{ role: string } | { message: string }> {
+    const user = await this.findOneByUserId(userId);
+
+    if (!user) {
+      throw new NotFoundException(`User with ID ${userId} not found`);
+    }
+
+    const businessRole = user.businessRoles.find((br) => br.businessId === businessId);
+
+    if (!businessRole) {
+      return {
+        message: `User with ID ${userId} does not have a role in business with ID ${businessId}`,
+      };
+    }
+
+    return { role: businessRole.role };
   }
 }

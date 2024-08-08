@@ -1,4 +1,3 @@
-
 import {
   Controller,
   Get,
@@ -9,7 +8,6 @@ import {
   Put,
   HttpException,
   HttpStatus,
-  Query,
   UseGuards,
 } from '@nestjs/common';
 import { BusinessService } from '../services/business.service';
@@ -25,7 +23,7 @@ export class businessController {
   constructor(
     private readonly businessService: BusinessService,
     private readonly verificationService: VerificationService,
-  ) { }
+  ) {}
 
   @Get(':companyNumber')
   @UseGuards(AuthGuard('jwt'))
@@ -83,7 +81,7 @@ export class businessController {
     }
   }
   @Put(':companyNumber')
-  @UseGuards(AuthGuard("jwt"))
+  @UseGuards(AuthGuard('jwt'))
   async updateBusinessByCompanyNumber(
     @Param('companyNumber') companyNumber: string,
     @Body() newData: CreateBusinessDtoLevel2,

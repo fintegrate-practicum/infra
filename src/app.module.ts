@@ -12,6 +12,7 @@ import { deleteOldCodeModule } from './deleteOldCode/deleteOldCode.module';
 import { HttpModule } from '@nestjs/axios';
 import { UserService } from './user/user.service';
 import { PapertrailLogger } from './logger';
+import { UserModule } from './userFromWorkers/module/users.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { PapertrailLogger } from './logger';
     }),
     businessModule,
     VerificationModule,
+    UserModule,
     ServiceSettingsModule,
     deleteOldCodeModule,
     MongooseModule.forRootAsync({
