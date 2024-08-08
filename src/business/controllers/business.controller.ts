@@ -8,7 +8,6 @@ import {
   Put,
   HttpException,
   HttpStatus,
-  Query,
   UseGuards,
 } from '@nestjs/common';
 import { BusinessService } from '../services/business.service';

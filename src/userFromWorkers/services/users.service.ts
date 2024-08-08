@@ -110,7 +110,7 @@ export class UserService {
 
       if (!existingUserByEmail.auth0_user_id) {
         existingUserByEmail.auth0_user_id = auth0_user_id;
-        console.log(existingUserByEmail.auth0_user_id);
+        this.logger.log(existingUserByEmail.auth0_user_id);
         await this.updateUser(existingUserByEmail.id, existingUserByEmail);
         return existingUserByEmail;
       } else {

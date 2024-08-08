@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
 import { ServiceSettingsService } from './serviceSettings.service';
 import { ServiceSettings } from '../schemas/serviceSettings.schema';
 import { CreateServiceSettingsDto } from '../dto/serviceSettings.dto';
@@ -24,7 +23,6 @@ const mockServiceSettingsModel = {
 
 describe('ServiceSettingsService', () => {
   let service: ServiceSettingsService;
-  let model: Model<ServiceSettings>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -38,7 +36,6 @@ describe('ServiceSettingsService', () => {
     }).compile();
 
     service = module.get<ServiceSettingsService>(ServiceSettingsService);
-    model = module.get<Model<ServiceSettings>>(getModelToken(ServiceSettings.name));
   });
 
   it('should be defined', () => {
