@@ -8,6 +8,7 @@ import { CreateBusinessDto } from "../dto/create-busin-first.dto";
 import { CreateBusinessDtoLevel2 } from "../dto/create-busin-secons.dto";
 import { VerificationService } from "src/verification/vertification.services";
 import { v4 as uuidv4 } from "uuid";
+import { Message } from "../interface/message.interface";
 
 @Injectable()
 export class BusinessService {
@@ -53,11 +54,17 @@ export class BusinessService {
     }
 
     const code = await this.verificationService.generateCode(newBusiness.email);
-    const message = {
-      pattern: "message_queue",
+    const message: Message = {
+      pattern: 'message_exchange',
       data: {
         to: newBusiness.email,
-        message: code,
+        subject: "taskName",
+        type: 'email',
+        kindSubject: 'newTask',
+        name: "user.userName",
+        description: "newTask.description",
+        managerName: "manager.userName",
+        businessId:"businessId"
       },
     };
     try {

@@ -1,12 +1,13 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import * as amqp from "amqplib/callback_api";
+import { Message } from "src/business/interface/message.interface";
 
 @Injectable()
 export class RabbitPublisherService {
   private connection: amqp.Connection;
   private channel: amqp.Channel;
-  private readonly nameExchange: string = "message_queue";
+  private readonly nameExchange: string = "message_exchange";
   private readonly nameQueue: string = "message_queue";
 
   constructor(private configService: ConfigService) {
@@ -78,8 +79,8 @@ export class RabbitPublisherService {
       console.error("Error initializing RabbitMQ:", error);
     }
   }
-
-  async publishMessageToCommunication(message: any): Promise<void> {
+  
+  async publishMessageToCommunication(message: Message): Promise<void> {
     if (!this.channel) {
       console.error("Channel is not initialized");
       return;
