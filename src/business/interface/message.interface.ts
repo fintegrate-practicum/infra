@@ -10,5 +10,6 @@ export interface Message {
     date?: Date;
     managerName: string;
     businessId:string;
+    text:string;
   };
 }

@@ -60,11 +60,12 @@ export class BusinessService {
         to: newBusiness.email,
         subject: "taskName",
         type: 'email',
-        kindSubject: 'newTask',
+        kindSubject: 'message',
         name: "user.userName",
         description: "newTask.description",
         managerName: "manager.userName",
-        businessId:"businessId"
+        businessId:"businessId",
+        text:"Thank you for subscribing to our website and good luck in the future"
       },
     };
     try {
