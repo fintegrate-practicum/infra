@@ -58,13 +58,14 @@ export class BusinessService {
       pattern: 'message_exchange',
       data: {
         to: newBusiness.email,
-        subject: "taskName",
+        subject: "Login to the site",
         type: 'email',
-        kindSubject: 'message',
+        kindSubject: 'send-code',
         name: "user.userName",
-        description: "newTask.description",
+        description: "description",
         managerName: "manager.userName",
         businessId:"businessId",
+        code:"123",
         text:"Thank you for subscribing to our website and good luck in the future"
       },
     };
