@@ -61,16 +61,25 @@ export class UserService {
     newUser.userName = user.name;
     newUser.registeredAt = user.created_at;
     newUser.lastLogin = user.last_login;
+    newUser.businessRoles = [
+      {
+        businessId: '12345',
+        role: 'admin',
+      },
+    ];
     await this.createUser(newUser);
     return 'User added successfully.';
   }
 
   async findOneByUserAuth0Id(userId: string): Promise<User | undefined> {
+    console.log('in the func findOneByUserAuth0Id');
     const user = await this.userModel.findOne({ auth0_user_id: userId }).exec();
     if (!user) {
+      console.log('not user');
       this.logger.error(`user with the id ${userId} was not found`);
-      throw new NotFoundException(`user with the id ${userId} was not found`);
+      // throw new NotFoundException(`user with the id ${userId} was not found`);
     }
+    console.log('user', user);
     return user;
   }
 
