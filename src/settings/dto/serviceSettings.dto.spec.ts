@@ -4,7 +4,7 @@ import { CreateServiceSettingsDto } from './serviceSettings.dto';
 describe('CreateServiceSettingsDto', () => {
   it('should validate valid DTO', async () => {
     const dto = new CreateServiceSettingsDto();
-    dto.service_name = 'test-service'; // עדכון ל-string תקני
+    dto.service_name = 'test-service';
     dto.settings_json = { key: 'value' };
 
     const errors = await validate(dto);
