@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class AppService {
+  private readonly logger = new Logger(AppService.name);
+
   constructor(private configService: ConfigService) {
     const dbUri = this.configService.get<string>('MONGODB_URI');
-    console.log(`DB URI from ConfigService: ${dbUri}`);
+    this.logger.log(`DB URI from ConfigService: ${dbUri}`);
   }
   getHello(): string {
     return 'Hello World!';

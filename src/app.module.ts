@@ -11,7 +11,9 @@ import { VerificationModule } from './verification/vertification.module';
 import { deleteOldCodeModule } from './deleteOldCode/deleteOldCode.module';
 import { HttpModule } from '@nestjs/axios';
 import { UserService } from './user/user.service';
+import { PapertrailLogger } from './logger';
 import { UserModule } from './userFromWorkers/module/users.module';
+
 @Module({
   imports: [
     AuthzModule,
@@ -33,6 +35,6 @@ import { UserModule } from './userFromWorkers/module/users.module';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, RabbitPublisherService, UserService],
+  providers: [AppService, RabbitPublisherService, UserService, PapertrailLogger],
 })
 export class AppModule {}

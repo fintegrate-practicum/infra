@@ -27,8 +27,8 @@ export class UserService {
     return user;
   }
 
-  async checkAndAddUser(user: any): Promise<string> {
-    const user_id_from_metadate = user.user_id.split('|');
+  async checkAndAddUser(user: any, userId: string): Promise<string> {
+    const user_id_from_metadate = userId.split('|');
     const auth0_user_id = user_id_from_metadate[1];
     if (!auth0_user_id) {
       throw new BadRequestException('Auth0 user ID not provided');
@@ -66,17 +66,12 @@ export class UserService {
   }
 
   async findOneByUserAuth0Id(userId: string): Promise<User | undefined> {
-    try {
-      const user = await this.userModel.findOne({ auth0_user_id: userId }).exec();
-      if (!user) {
-        this.logger.error(`user with the id ${userId} was not found`);
-        throw new NotFoundException(`user with the id ${userId} was not found`);
-      }
-      return user;
-    } catch (error) {
-      this.logger.error('Failed to find user', error.stack);
-      throw new InternalServerErrorException('Error fetching user');
+    const user = await this.userModel.findOne({ auth0_user_id: userId }).exec();
+    if (!user) {
+      this.logger.error(`user with the id ${userId} was not found`);
+      throw new NotFoundException(`user with the id ${userId} was not found`);
     }
+    return user;
   }
 
   async findOneByEmail(email: string): Promise<User | undefined> {
@@ -110,7 +105,7 @@ export class UserService {
 
       if (!existingUserByEmail.auth0_user_id) {
         existingUserByEmail.auth0_user_id = auth0_user_id;
-        console.log(existingUserByEmail.auth0_user_id);
+        this.logger.log(existingUserByEmail.auth0_user_id);
         await this.updateUser(existingUserByEmail.id, existingUserByEmail);
         return existingUserByEmail;
       } else {
