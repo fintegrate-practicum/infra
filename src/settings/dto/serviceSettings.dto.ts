@@ -1,9 +1,9 @@
-import { IsNotEmpty, IsNumber, IsObject } from 'class-validator';
+import { IsNotEmpty, IsString, IsObject } from 'class-validator';
 
 export class CreateServiceSettingsDto {
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
-  service_id: number;
+  service_name: string;
 
   @IsObject()
   @IsNotEmpty()

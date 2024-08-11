@@ -6,11 +6,11 @@ export type ServiceSettingsDocument = ServiceSettings & Document;
 @Schema()
 export class ServiceSettings {
   @Prop({
-    type: Number,
+    type: String,
     required: true,
     unique: true,
   })
-  service_id: number;
+  service_name: string;
 
   @Prop({
     type: MongooseSchema.Types.Mixed,

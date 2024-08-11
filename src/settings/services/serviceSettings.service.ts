@@ -17,9 +17,9 @@ export class ServiceSettingsService {
   async createOrUpdate(
     createServiceSettingsDto: CreateServiceSettingsDto,
   ): Promise<ServiceSettings> {
-    const { service_id } = createServiceSettingsDto;
+    const { service_name } = createServiceSettingsDto;
     return this.serviceSettingsModel
-      .findOneAndUpdate({ service_id }, createServiceSettingsDto, {
+      .findOneAndUpdate({ service_name }, createServiceSettingsDto, {
         new: true,
         upsert: true,
       })
@@ -30,7 +30,12 @@ export class ServiceSettingsService {
     return this.serviceSettingsModel.find().exec();
   }
 
-  async findOne(id: number): Promise<ServiceSettings> {
-    return this.serviceSettingsModel.findOne({ service_id: id }).exec();
+  async getAllServiceNames(): Promise<string[]> {
+    const services = await this.serviceSettingsModel.find({}, 'service_name').exec();
+    return services.map((service) => service.service_name);
+  }
+
+  async findOneByServiceName(serviceName: string): Promise<ServiceSettings | null> {
+    return this.serviceSettingsModel.findOne({ service_name: serviceName }).exec();
   }
 }
