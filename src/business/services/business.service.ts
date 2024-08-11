@@ -65,7 +65,7 @@ export class BusinessService {
         description: "description",
         managerName: "manager.userName",
         businessId:"businessId",
-        code:"123",
+        code:code,
         text:"Thank you for subscribing to our website and good luck in the future"
       },
     };
