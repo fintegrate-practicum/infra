@@ -3,13 +3,11 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Organization } from '../schema/organization.entity';
 import { RabbitPublisherService } from 'src/rabbit-publisher/rabbit-publisher.service';
-// const code="4244"
-import { CreateBusinessDto } from "../dto/create-busin-first.dto";
-import { CreateBusinessDtoLevel2 } from "../dto/create-busin-secons.dto";
-import { VerificationService } from "src/verification/vertification.services";
-import { v4 as uuidv4 } from "uuid";
-import { Message } from "../interface/message.interface";
-
+import { CreateBusinessDto } from '../dto/create-busin-first.dto';
+import { CreateBusinessDtoLevel2 } from '../dto/create-busin-secons.dto';
+import { VerificationService } from 'src/verification/vertification.services';
+import { v4 as uuidv4 } from 'uuid';
+import { Message } from '../interface/message.interface';
 
 @Injectable()
 export class BusinessService {
@@ -57,15 +55,15 @@ export class BusinessService {
       pattern: 'message_exchange',
       data: {
         to: newBusiness.email,
-        subject: "Login to the site",
+        subject: 'Login to the site',
         type: 'email',
         kindSubject: 'send-code',
-        name: "user.userName",
-        description: "description",
-        managerName: "manager.userName",
-        businessId:"businessId",
-        code:code,
-        text:"Thank you for subscribing to our website and good luck in the future"
+        name: 'user.userName',
+        description: 'description',
+        managerName: 'manager.userName',
+        businessId: 'businessId',
+        code: code,
+        text: 'Thank you for subscribing to our website and good luck in the future',
       },
     };
     try {

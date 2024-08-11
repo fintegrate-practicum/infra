@@ -1,17 +1,15 @@
-import { Injectable, Logger } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import * as amqp from "amqplib/callback_api";
-import { Message } from "src/business/interface/message.interface";
-
+import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import * as amqp from 'amqplib/callback_api';
+import { Message } from 'src/business/interface/message.interface';
 
 @Injectable()
 export class RabbitPublisherService {
   private readonly logger = new Logger(RabbitPublisherService.name);
   private connection: amqp.Connection;
   private channel: amqp.Channel;
-  private readonly nameExchange: string = "message_exchange";
-  private readonly nameQueue: string = "message_queue";
-
+  private readonly nameExchange: string = 'message_exchange';
+  private readonly nameQueue: string = 'message_queue';
 
   constructor(private configService: ConfigService) {
     this.nameExchange =
@@ -66,7 +64,7 @@ export class RabbitPublisherService {
       this.logger.error('Error initializing RabbitMQ:', error.message);
     }
   }
-  
+
   async publishMessageToCommunication(message: Message): Promise<void> {
     if (!this.channel) {
       this.logger.error('Channel is not initialized');
