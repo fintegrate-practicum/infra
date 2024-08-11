@@ -6,8 +6,8 @@ import { ServiceSettings } from '../schemas/serviceSettings.schema';
 import { CreateServiceSettingsDto } from '../dto/serviceSettings.dto';
 
 const mockServiceSettings = {
-  service_id: 1,
-  setting: 'example',
+  service_name: 'test-service',
+  settings_json: 'example',
 };
 
 const mockServiceSettingsModel = {
@@ -46,7 +46,10 @@ describe('ServiceSettingsService', () => {
   });
 
   it('should create or update a service setting', async () => {
-    const dto: CreateServiceSettingsDto = { service_id: 1, settings_json: 'example' };
+    const dto: CreateServiceSettingsDto = {
+      service_name: 'test-service',
+      settings_json: 'example',
+    };
     const result = await service.createOrUpdate(dto);
     expect(result).toEqual(mockServiceSettings);
   });
@@ -57,7 +60,7 @@ describe('ServiceSettingsService', () => {
   });
 
   it('should return a single service setting', async () => {
-    const result = await service.findOne(1);
+    const result = await service.findOneByServiceName('test-service');
     expect(result).toEqual(mockServiceSettings);
   });
 });

@@ -11,7 +11,7 @@ describe('ServiceSettingsController', () => {
   const mockServiceSettingsService = {
     createOrUpdate: jest.fn(),
     findAll: jest.fn(),
-    findOne: jest.fn(),
+    findOneByServiceName: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -35,7 +35,10 @@ describe('ServiceSettingsController', () => {
 
   describe('create', () => {
     it('should create a service setting', async () => {
-      const dto: CreateServiceSettingsDto = { service_id: 1, settings_json: {} };
+      const dto: CreateServiceSettingsDto = {
+        service_name: 'test-service',
+        settings_json: {},
+      };
       const result: ServiceSettings = { ...dto } as any;
       jest.spyOn(service, 'createOrUpdate').mockResolvedValue(result);
 
@@ -45,19 +48,25 @@ describe('ServiceSettingsController', () => {
 
   describe('findAll', () => {
     it('should return an array of service settings', async () => {
-      const result: ServiceSettings[] = [{ service_id: 1, settings_json: {} }] as any;
+      const result: ServiceSettings[] = [
+        { service_name: 'test-service', settings_json: {} },
+      ] as any;
       jest.spyOn(service, 'findAll').mockResolvedValue(result);
 
       expect(await controller.findAll()).toEqual(result);
     });
   });
 
-  describe('findOne', () => {
+  describe('findOneByServiceName', () => {
     it('should return a single service setting', async () => {
-      const dto: ServiceSettings = { service_id: 1, settings_json: {} } as any;
-      jest.spyOn(service, 'findOne').mockResolvedValue(dto);
+      const serviceName = 'test-service';
+      const dto: ServiceSettings = {
+        service_name: serviceName,
+        settings_json: {},
+      } as any;
+      jest.spyOn(service, 'findOneByServiceName').mockResolvedValue(dto);
 
-      expect(await controller.findOne(1)).toEqual(dto);
+      expect(await controller.findOneByServiceName(serviceName)).toEqual(dto);
     });
   });
 });

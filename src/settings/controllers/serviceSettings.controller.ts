@@ -19,8 +19,15 @@ export class ServiceSettingsController {
     return this.serviceSettingsService.findAll();
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: number): Promise<ServiceSettings> {
-    return this.serviceSettingsService.findOne(id);
+  @Get('names')
+  async getAllServiceNames(): Promise<string[]> {
+    return this.serviceSettingsService.getAllServiceNames();
+  }
+
+  @Get(':serviceName')
+  async findOneByServiceName(
+    @Param('serviceName') serviceName: string,
+  ): Promise<ServiceSettings | null> {
+    return this.serviceSettingsService.findOneByServiceName(serviceName);
   }
 }
