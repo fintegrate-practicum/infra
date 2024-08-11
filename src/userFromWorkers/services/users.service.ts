@@ -63,7 +63,7 @@ export class UserService {
     newUser.lastLogin = user.last_login;
     newUser.businessRoles = [
       {
-        businessId: '12345',
+        businessId: user.businessId,
         role: 'admin',
       },
     ];
@@ -75,11 +75,8 @@ export class UserService {
     console.log('in the func findOneByUserAuth0Id');
     const user = await this.userModel.findOne({ auth0_user_id: userId }).exec();
     if (!user) {
-      console.log('not user');
       this.logger.error(`user with the id ${userId} was not found`);
-      // throw new NotFoundException(`user with the id ${userId} was not found`);
     }
-    console.log('user', user);
     return user;
   }
 
