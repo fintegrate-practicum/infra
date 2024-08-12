@@ -52,7 +52,7 @@ export class BusinessService {
 
     const code = await this.verificationService.generateCode(newBusiness.email);
     const message: Message = {
-      pattern: 'message_exchange',
+      pattern: process.env.RABBITMQ_EXCHANGE_NAME,
       data: {
         to: newBusiness.email,
         subject: 'Login to the site',

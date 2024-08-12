@@ -8,8 +8,8 @@ export class RabbitPublisherService {
   private readonly logger = new Logger(RabbitPublisherService.name);
   private connection: amqp.Connection;
   private channel: amqp.Channel;
-  private readonly nameExchange: string = 'message_exchange';
-  private readonly nameQueue: string = 'message_queue';
+  private readonly nameExchange: string = process.env.RABBITMQ_EXCHANGE_NAME;
+  private readonly nameQueue: string = process.env.RABBITMQ_QUEUE_NAME;
 
   constructor(private configService: ConfigService) {
     this.nameExchange =
