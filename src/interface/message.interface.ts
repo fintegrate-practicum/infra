@@ -10,7 +10,7 @@ export interface Message {
     date?: Date;
     managerName?: string;
     invitationLink: string;
-    connections: any[];
+    connection: any[];
     businessId: string;
   };
 }
