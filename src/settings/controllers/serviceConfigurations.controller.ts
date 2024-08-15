@@ -13,7 +13,6 @@ export class ServiceConfigurationsController {
   async create(
     @Body() createConfigDto: CreateServiceConfigurationDTO,
   ): Promise<ServiceConfigurations> {
-    console.log('createConfigDto');
     return this.serviceConfigurationsService.updateOrCreate(
       createConfigDto.serviceName,
       createConfigDto.settings,
