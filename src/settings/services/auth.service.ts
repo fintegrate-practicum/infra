@@ -3,8 +3,6 @@ import { HttpService } from '@nestjs/axios';
 import { RabbitPublisherService } from '../../rabbit-publisher/rabbit-publisher.service';
 import { ConfigService } from '@nestjs/config';
 import { Message } from '../../interface/message.interface';
-import { config } from './config';
-import * as https from 'https';
 
 @Injectable()
 export class AuthService {
@@ -16,10 +14,8 @@ export class AuthService {
     private readonly httpService: HttpService,
     private readonly rabbitPublisherService: RabbitPublisherService,
   ) {
-    this.AUTH0_DOMAIN =
-      this.configService.get<string>('AUTH0_DOMAIN') || config.AUTH0_DOMAIN;
-    this.AUTH0_API_TOKEN =
-      this.configService.get<string>('AUTH0_API_TOKEN') || config.AUTH0_API_TOKEN;
+    this.AUTH0_DOMAIN = this.configService.get<string>('AUTH0_DOMAIN');
+    this.AUTH0_API_TOKEN = this.configService.get<string>('AUTH0_API_TOKEN');
   }
 
   // פונקציה ליצירת משתמש ב-Auth0 ושליחת הודעה
@@ -45,8 +41,6 @@ export class AuthService {
 
   // יצירת קישור להשלמת הרישום ב-Auth0
   private async createRegistrationLink(userId: string): Promise<string> {
-    const registrationLink = `https://${this.AUTH0_DOMAIN}/continue-registration?user_id=${userId}`;
-    console.log(registrationLink);
     return `https://${this.AUTH0_DOMAIN}/continue-registration?user_id=${userId}`;
   }
   private async sendNotificationToEmployee(
@@ -85,11 +79,9 @@ export class AuthService {
             'Authorization': `Bearer ${this.AUTH0_API_TOKEN}`, // הוספת טוקן ההרשאה
             'Content-Type': 'application/json',
           },
-          httpsAgent: new https.Agent({ rejectUnauthorized: false }), // עקיפת אימות SSL
         })
         .toPromise();
 
-      console.log(userIdentity.data);
       return userIdentity.data;
     } catch (error) {
       console.error(
@@ -124,7 +116,6 @@ export class AuthService {
               'Authorization': `Bearer ${this.AUTH0_API_TOKEN}`,
               'Content-Type': 'application/json',
             },
-            httpsAgent: new https.Agent({ rejectUnauthorized: false }), // עקיפת אימות SSL
           },
         )
         .toPromise();
