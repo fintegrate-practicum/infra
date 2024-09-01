@@ -17,13 +17,15 @@ export class ServiceConfigurationsService {
     serviceName: string,
     newSettings: any[],
   ): Promise<ServiceConfigurations> {
-    const existingConfiguration = await this.serviceConfigurationsModel.findOne({
-      serviceName,
-    });
+    const existingConfiguration = await this.serviceConfigurationsModel
+      .findOne({
+        serviceName,
+      })
+      .exec();
 
     if (existingConfiguration) {
       newSettings.forEach((newSetting) => {
-        const existingSetting = existingConfiguration.settings.find(
+        const existingSetting = existingConfiguration.settings?.find(
           (s) => s.key === newSetting.key,
         );
         if (existingSetting) {
