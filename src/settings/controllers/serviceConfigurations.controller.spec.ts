@@ -60,4 +60,18 @@ describe('ServiceConfigurationsController', () => {
       expect(await controller.findAll()).toEqual(result);
     });
   });
+
+  describe('findOne', () => {
+    it('should return a single service configuration', async () => {
+      const serviceName = 'test-service';
+      const dto: ServiceConfigurations = {
+        serviceName,
+        settings: [{ key: 'exampleKey', value: 'exampleValue' }],
+      } as any;
+
+      jest.spyOn(service, 'findOne').mockResolvedValue(dto);
+
+      expect(await controller.findOne(serviceName)).toEqual(dto);
+    });
+  });
 });
