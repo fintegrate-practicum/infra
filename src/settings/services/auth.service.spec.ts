@@ -20,8 +20,6 @@ describe('AuthService with mocked Auth0 API calls', () => {
               switch (key) {
                 case 'AUTH0_DOMAIN':
                   return 'dev-14d7lww6ch5of26k.us.auth0.com';
-                case 'AUTH0_API_TOKEN':
-                  return 'mocked_token'; // Mock token to prevent actual API calls
                 default:
                   return '';
               }
