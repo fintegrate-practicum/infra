@@ -53,7 +53,7 @@ describe('AuthService', () => {
     it('should create a registration link for the user', async () => {
       const userId = 'auth0|mockedUserId';
       const expectedLink =
-        'https://dev-14d7lww6ch5of26k.us.auth0.com/continue-registration?user_id=auth0|mockedUserId';
+        'https://mocked_domain-14d7lww6ch5of26k.us.auth0.com/continue-registration?user_id=auth0|mockedUserId';
       const registrationLink = await service['createRegistrationLink'](userId);
       expect(registrationLink).toBe(expectedLink);
     });
