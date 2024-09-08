@@ -71,17 +71,39 @@ describe('AuthService', () => {
   });
   describe('sendNotificationToEmployee', () => {
     it('should send notification to employee', async () => {
-      const sendNotificationToEmployeeSpy = jest
-        .spyOn(service as any, 'sendNotificationToEmployee')
-        .mockRejectedValue(new Error('Send notification failed'));
+      // יצירת מוק לפונקציה הפנימית
+      const publishMessageToCommunicationMock = jest
+        .spyOn(rabbitPublisherService, 'publishMessageToCommunication')
+        .mockResolvedValue(undefined);
+
       const email = 'worker@example.com';
-      const name = 'Mock Worker';
+      const name = 'עובד מדמה';
       const registrationLink = 'https://example.com/registration-link';
       const connections = [{ provider: 'google-oauth2', user_id: '12345' }];
-      await expect(
-        service['sendNotificationToEmployee'](email, name, registrationLink, connections),
-      ).rejects.toThrow('Send notification failed'); // Verify the sendNotificationToEmployee was called correctly
-      expect(sendNotificationToEmployeeSpy).toHaveBeenCalled();
+
+      // קריאה לפונקציה ובדיקה אם היא מבצעת את מה שצריך
+      await service['sendNotificationToEmployee'](
+        email,
+        name,
+        registrationLink,
+        connections,
+      );
+
+      // ודא שהפונקציה הפנימית נקראה כראוי
+      expect(publishMessageToCommunicationMock).toHaveBeenCalledTimes(1);
+      expect(publishMessageToCommunicationMock).toHaveBeenCalledWith({
+        pattern: 'message_exchange',
+        data: {
+          to: email,
+          subject: 'Notification from Your App',
+          type: 'email',
+          kindSubject: 'new Employee',
+          name: name,
+          invitationLink: registrationLink,
+          connection: connections,
+          businessId: '1',
+        },
+      });
     });
   });
 
